@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "869474998909",
+    "firebase_url": "https://flipflop-5f532.firebaseio.com",
+    "project_id": "flipflop-5f532",
+    "storage_bucket": "flipflop-5f532.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:869474998909:android:7fa3c63bddf8ac16",
+        "android_client_info": {
+          "package_name": "ca.uoit.flip_flop.flipflop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "869474998909-su4e7csn9a5uflmchokphhnp4rfj39ng.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.uoit.flip_flop.flipflop",
+            "certificate_hash": "9193fc1cc9e40ab57b7cc42d028d521d9ad52b89"
+          }
+        },
+        {
+          "client_id": "869474998909-ce0nofm89lgedui7163kudb6r5c04973.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZ0J_KropbLopyJHjxGckceghNDb3DQwk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "869474998909-ce0nofm89lgedui7163kudb6r5c04973.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

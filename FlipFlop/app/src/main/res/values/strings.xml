@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Flip Flop</string>
+    <string name="login_button">Login</string>
+    <string name="logout_button">Logout</string>
+    <string name="register_button">Register</string>
+    <string name="settings_button">Settings</string>
+    <string name="post_title">Title: </string>
+    <string name="sample_text">This is sample text</string>
+    <string name="sample_description">Astronomy is the scientific study of celestial objects
+    (such as stars, planets, comets, and galaxies) and phenomena that originate outside the </string>
+    <string name="post_comment">Post Comment</string>
+    <string name="cancel_comment">Cancel</string>
+    <string name="username_field">Username</string>
+    <string name="password_field">Password</string>
+    <string name="confirm_pass_field">Confirm Password</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="login_prompt">Login</string>
+    <string name="register_prompt">Register</string>
+</resources>
