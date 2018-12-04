@@ -89,12 +89,14 @@
                         <Button
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:onClick="postComment"
                             android:text="@string/post_comment"/>
 
 
                         <Button
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:onClick="cancelComment"
                             android:text="@string/cancel_comment"/>
 
 

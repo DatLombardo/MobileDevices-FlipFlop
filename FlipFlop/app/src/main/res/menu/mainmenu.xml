@@ -6,6 +6,13 @@
     >
 
     <item
+        android:id="@+id/action_Add"
+        android:icon="@drawable/addicon"
+        app:showAsAction="always"
+        android:title="add">
+    </item>
+
+    <item
         android:id="@+id/action_Login"
         app:showAsAction="never"
         android:title="@string/login_button">
@@ -24,7 +31,7 @@
     </item>
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_Settings"
         app:showAsAction="never"
         android:title="Settings">
     </item>

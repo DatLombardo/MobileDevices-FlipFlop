@@ -16,4 +16,9 @@
     <string name="cancel_button">Cancel</string>
     <string name="login_prompt">Login</string>
     <string name="register_prompt">Register</string>
+    <string name="post_content">Content: </string>
+    <string name="post_title_prompt">Max title length: 50 characters</string>
+    <string name="post_content_prompt">Max characters: 250</string>
+    <string name="post_button">Post</string>
+    <string name="comment_content_prompt">Max comment length: 250 characters</string>
 </resources>

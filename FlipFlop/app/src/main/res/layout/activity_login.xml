@@ -45,12 +45,16 @@
             android:id="@+id/login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="doLogin"
             android:text="@string/login_button"/>
 
         <Button
             android:id="@+id/login_cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="cancelLogin"
             android:text="@string/cancel_button"/>
     </LinearLayout>
 

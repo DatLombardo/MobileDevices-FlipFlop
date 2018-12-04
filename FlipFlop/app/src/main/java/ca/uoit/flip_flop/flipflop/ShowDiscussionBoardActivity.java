@@ -36,6 +36,12 @@ public class ShowDiscussionBoardActivity extends AppCompatActivity {
         recyclerView.setAdapter(new ShowDiscussionBoardActivity.CommentAdapter(comments));
     }
 
+    public void cancelComment(View view){finish();}
+
+    public void postComment(View view){
+
+    }
+
     public class CommentAdapter extends
             RecyclerView.Adapter<ShowDiscussionBoardActivity.CommentAdapter.ViewHolder>{
         private ArrayList<Comment> comments = new ArrayList<Comment>();

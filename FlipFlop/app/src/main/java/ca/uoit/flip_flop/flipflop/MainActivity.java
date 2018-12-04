@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -34,10 +35,16 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<User> userList = new ArrayList<User>();
     private ArrayList<Post> postList = new ArrayList<Post>();
     private ArrayList<Comment> commentList = new ArrayList<Comment>();
+    private User currentUser;
 
     protected DatabaseReference userTable;
     protected DatabaseReference postTable;
     protected DatabaseReference commentTable;
+
+    private final int ADD_POST_CODE = 1000;
+    private final int ADD_COMMENT_CODE = 2000;
+    private final int LOGIN_CODE = 1001;
+    private final int REGISTRATION_CODE = 1002;
 
     public int userCount;
     public int postCount;
@@ -99,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
                     userList.add(user);
 
                     userCount = id;
+                    //System.out.println(userCount);
                 }
                 //See the output from the database read
                 /*
@@ -169,10 +177,12 @@ public class MainActivity extends AppCompatActivity {
                         int commentNum = Integer.parseInt(comment.getKey());
                         String contents = comment.child("contents").getValue(String.class);
                         int userId = comment.child("user_id").getValue(Integer.class);
+                        //long userId = Integer.parseInt(comment.child("user_id").getValue(String.class));
                         Comment comm = new Comment();
                         comm.setCommentId(commentId);
                         comm.setComment(contents);
                         comm.setCommentNumber(commentNum);
+
                         /**
                          * TODO::
                          * CREATE A FUNCTION TO GET USER NAME GIVEN USERID
@@ -371,16 +381,19 @@ public class MainActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_Login:
-                //login();
+                launchLogin();
                 return true;
             case R.id.action_Register:
-                //register();
+                launchRegistration();
                 return true;
             case R.id.action_Logout:
                 //logout();
                 return true;
-            case R.id.action_settings:
+            case R.id.action_Settings:
                 //settings();
+                return true;
+            case R.id.action_Add:
+                launchAddPost();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -390,6 +403,29 @@ public class MainActivity extends AppCompatActivity {
     public void openPost(View view) {
         Intent intent = new Intent(this, ShowDiscussionBoardActivity.class);
         intent.putExtra("count", userCount);
+        startActivity(intent);
+    }
+
+    public void launchAddPost() {
+        if (currentUser != null) {
+            Intent intent = new Intent(this, AddPostActivity.class);
+
+            intent.putExtra("user_id", currentUser.getUserId());
+            startActivityForResult(intent, ADD_POST_CODE);
+
+        } else {
+            Toast.makeText(this, "Must be logged in to post", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void launchLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    public void launchRegistration() {
+        Intent intent = new Intent(this, RegisterActivity.class);
+        intent.putExtra("user_count", userCount);
         startActivity(intent);
     }
 
@@ -415,5 +451,25 @@ public class MainActivity extends AppCompatActivity {
         User testUser2= this.users.get(1);
         dbHelper.createDislike(3, testUser1.getUserId());
         dbHelper.createDislike(2, testUser2.getUserId());
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (requestCode == ADD_POST_CODE){
+            if (resultCode == RESULT_OK){
+                //TODO: db stuff
+            }
+        } else if (requestCode == LOGIN_CODE){
+            if (resultCode == RESULT_OK){
+                //TODO: db stuff
+            }
+        } else if (requestCode == REGISTRATION_CODE){
+            if (resultCode == RESULT_OK){
+                //TODO: db stuff
+            }
+        } else if (requestCode == ADD_COMMENT_CODE){
+            if (resultCode == RESULT_OK){
+                //TODO: db stuff
+            }
+        }
     }
 }

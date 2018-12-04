@@ -49,37 +49,21 @@
                         android:id="@+id/poster_name"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:paddingLeft="5dp"
                         android:text = "USERNAME"/>
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/title_holder"
+                <TextView
+                    android:id="@+id/post_title"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp"
-                    android:layout_below="@id/username">
+                    android:layout_height="match_parent"
+                    android:paddingLeft="5dp"
+                    android:onClick="openPost"
+                    android:textSize="20dp"
+                    android:textColor="#0000FF"
+                    android:text="This is a fake title "/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:paddingBottom="4dp"
-                        android:textStyle="bold"
-                        android:text="@string/post_title"
-                        android:textSize="12dp" />
-
-                    <TextView
-                        android:id="@+id/post_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:onClick="openPost"
-                        android:paddingLeft="5dp"
-                        android:text="This is a fake title "/>
-
-                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -105,7 +89,7 @@
                 android:layout_height="30dp"
                 android:layout_marginStart="130dp"
                 android:layout_toRightOf="@id/username_title"
-                android:src="@mipmap/ic_launcher_round"
+                android:src="@drawable/up_vote"
                 />
             <TextView
                 android:id="@+id/reputation_counter"
@@ -123,8 +107,8 @@
                 android:layout_height="30dp"
                 android:layout_marginStart="130dp"
                 android:layout_toRightOf="@id/username_title"
-                android:layout_below="@id/vote_counter"
-                android:src="@mipmap/ic_launcher_round" />
+                android:layout_below="@id/reputation_counter"
+                android:src="@drawable/down_vote" />
 
         </RelativeLayout>
 

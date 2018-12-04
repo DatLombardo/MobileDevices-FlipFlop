@@ -1,7 +1,9 @@
 package ca.uoit.flip_flop.flipflop;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -23,4 +25,8 @@ public class LoginActivity extends AppCompatActivity {
         cancelBtn = (Button)findViewById(R.id.login_cancel_button);
 
     }
+
+    public void cancelLogin(View view){finish();}
+
+    public void doLogin(View view) {}
 }
