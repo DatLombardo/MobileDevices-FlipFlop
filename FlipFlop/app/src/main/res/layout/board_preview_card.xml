@@ -83,12 +83,17 @@
 
             </LinearLayout>
 
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="300dp">
+
             <ImageButton
                 android:id="@+id/upVote"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginStart="130dp"
-                android:layout_toRightOf="@id/username_title"
                 android:src="@drawable/up_vote"
                 />
             <TextView
@@ -96,21 +101,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="+1"
+                android:paddingLeft="8dp"
                 android:textStyle="bold"
                 android:textSize="18dp"
-                android:layout_toEndOf="@id/username_title"
                 android:layout_below="@id/upVote"
-                android:layout_marginStart="135dp"/>
+                />
             <ImageButton
                 android:id="@+id/downVote"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginStart="130dp"
-                android:layout_toRightOf="@id/username_title"
                 android:layout_below="@id/reputation_counter"
                 android:src="@drawable/down_vote" />
-
-        </RelativeLayout>
+        </LinearLayout>
 
     </android.support.v7.widget.CardView>
 

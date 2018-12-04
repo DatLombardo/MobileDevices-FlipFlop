@@ -66,6 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             userTable.child(newCount).child("username").setValue(username);
             userTable.child(newCount).child("password").setValue(password);
+            Toast.makeText(this, "Registration Complete", Toast.LENGTH_SHORT).show();
             finish();
         } else {
             Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
