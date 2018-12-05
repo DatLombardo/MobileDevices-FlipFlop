@@ -46,10 +46,6 @@ public class MainActivity extends AppCompatActivity {
     private final int LOGIN_CODE = 1001;
     private final int REGISTRATION_CODE = 1002;
 
-    int voteCounter = 0;
-    ImageButton upVote;
-    ImageButton downVote;
-
     public int userCount;
     public int postCount;
     public int commentCount;
@@ -332,11 +328,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         class ViewHolder extends RecyclerView.ViewHolder{
+            Post post;
             View customView;
             TextView postTitle;
             TextView posterName;
             TextView postContent;
             TextView repCounter;
+            ImageButton upVote;
+            ImageButton downVote;
+
+            int index = 0;
 
             ViewHolder(View view){
                 super(view);
@@ -345,6 +346,27 @@ public class MainActivity extends AppCompatActivity {
                 posterName = view.findViewById(R.id.poster_name);
                 postContent = view.findViewById(R.id.post_content);
                 repCounter = view.findViewById(R.id.reputation_counter);
+                upVote = view.findViewById(R.id.upVote);
+                downVote = view.findViewById(R.id.downVote);
+
+                upVote.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        post.setReputation(post.getReputation() + 1);
+                        DatabaseReference ref = postTable.child(Integer.toString(post.getPostId()));
+                        ref.child("reputation").setValue(post.getReputation());
+                    }
+                });
+
+                downVote.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        post.setReputation(post.getReputation() - 1);
+                        DatabaseReference ref = postTable.child(Integer.toString(post.getPostId()));
+                        ref.child("reputation").setValue(post.getReputation());
+                    }
+                });
+
             }
         }
 
@@ -355,41 +377,11 @@ public class MainActivity extends AppCompatActivity {
             return new ViewHolder(layout);
         }
 
-        /*
-        TODO: THIS IS WHERE UPVOTE AND DOWNVOTE HAPPENS, DO NOT REMOVE!
-
-
-        public void addListenerOnButtonClick() {
-            upVote = (ImageButton)findViewById(R.id.upVote);
-            downVote = (ImageButton)findViewById(R.id.downVote);
-
-            upVote.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view) {
-                    voteCounter = voteCounter + 1;
-                    reputation(voteCounter);
-                    Toast.makeText(MainActivity.this, "UP VOTE", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            downVote.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view) {
-                    voteCounter = voteCounter - 1;
-                    reputation(voteCounter);
-                    Toast.makeText(MainActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-
-        public void reputation (int voteCount) {
-            TextView displayReputation = (TextView)findViewById(R.id.reputation_counter);
-            displayReputation.setText(voteCount);
-        }
-        */
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int index) {
+            holder.index = index;
+            holder.post = posts.get(index);
             holder.postTitle.setText(posts.get(index).getTitle());
             String username = getUsername(posts.get(index).getUserId());
             holder.posterName.setText(username);
@@ -473,7 +465,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void launchLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, LOGIN_CODE);
     }
 
     public void launchRegistration() {

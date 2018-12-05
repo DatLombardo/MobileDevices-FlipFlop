@@ -21,8 +21,6 @@ public class LoginActivity extends AppCompatActivity {
 
         usernameField = (EditText)findViewById(R.id.username_login);
         passwordField = (EditText)findViewById(R.id.password_login);
-        loginBtn = (Button)findViewById(R.id.login_button);
-        cancelBtn = (Button)findViewById(R.id.login_cancel_button);
 
     }
 
