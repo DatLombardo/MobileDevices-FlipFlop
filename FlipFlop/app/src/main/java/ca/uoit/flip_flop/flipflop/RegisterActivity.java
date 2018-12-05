@@ -14,6 +14,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -54,20 +56,30 @@ public class RegisterActivity extends AppCompatActivity {
         String username = usernameField.getText().toString();
         String password = passwordField.getText().toString();
         String secondPass = confirmPassField.getText().toString();
+        boolean userExists = false;
 
         if (password.equals(secondPass)) {
-            int userCount = getIntent().getIntExtra("user_count", 0);
+            ArrayList<User> userList =
+                    (ArrayList<User>)getIntent().getSerializableExtra("user_list");
 
-//        Intent intent = new Intent();
-//        intent.putExtra("username", username);
-//        intent.putExtra("password", password);
+            for(User user : userList){
+                if (username.equals(user.getUsername())){
+                    Toast.makeText
+                            (this, "Username already exists", Toast.LENGTH_SHORT).show();
+                    userExists = true;
+                    break;
+                }
+            }
 
-            String newCount = String.valueOf(userCount + 1);
+            if (!userExists) {
+                int userCount = getIntent().getIntExtra("user_count", 0);
+                String newCount = String.valueOf(userCount + 1);
 
-            userTable.child(newCount).child("username").setValue(username);
-            userTable.child(newCount).child("password").setValue(password);
-            Toast.makeText(this, "Registration Complete", Toast.LENGTH_SHORT).show();
-            finish();
+                userTable.child(newCount).child("username").setValue(username);
+                userTable.child(newCount).child("password").setValue(password);
+                Toast.makeText(this, "Registration Complete", Toast.LENGTH_SHORT).show();
+                finish();
+            }
         } else {
             Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
         }

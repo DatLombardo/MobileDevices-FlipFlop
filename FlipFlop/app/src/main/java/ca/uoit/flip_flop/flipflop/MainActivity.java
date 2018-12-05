@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 public class MainActivity extends AppCompatActivity {
-    private ArrayList<PostPreview> postPreviews = new ArrayList<PostPreview>();
     public BoardDBHelper dbHelper = new BoardDBHelper(this);
     private List<User> users;
     private ArrayList<User> userList = new ArrayList<User>();
@@ -54,18 +53,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        PostPreview preview = new PostPreview(1, "spew", "lombo", "lombobobombo", 3);
-        postPreviews.add(new PostPreview(1, "spew", "lombo", "lombobobombo", 14));
-        postPreviews.add(new PostPreview(1, "spew1", "lombo", "lombobobombo", 2));
-        postPreviews.add(new PostPreview(1, "spew2", "lombo", "lombobobombo", 7));
-        postPreviews.add(new PostPreview(1, "spew3", "lombo", "lombobobombo", 1));
 
         //recycler view stuff
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerview_boards);
+        final RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerview_boards);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new BoardAdapter(postPreviews));
+        final BoardAdapter boardAdapter = new BoardAdapter(postList);
 
         //Database stuff
         dbHelper.deleteAllUsers();
@@ -84,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
         userTable = FirebaseDatabase.getInstance().getReference("Users");
         commentTable = FirebaseDatabase.getInstance().getReference().child("Comments");
         postTable = FirebaseDatabase.getInstance().getReference().child("Posts");
+
+        recyclerView.setAdapter(boardAdapter);
 
         userTable.addValueEventListener(new ValueEventListener() {
             @Override
@@ -154,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < postList.size(); i++) {
                     System.out.println(postList.get(i).getTitle());
                 }*/
-
+                boardAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -325,10 +320,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder>{
-        private ArrayList<PostPreview> posts = new ArrayList<PostPreview>();
+        private ArrayList<Post> posts = new ArrayList<Post>();
 
-        BoardAdapter(ArrayList<PostPreview> postPreviews){
-            posts = postPreviews;
+        BoardAdapter(ArrayList<Post> postList){
+            posts = postList;
         }
 
         class ViewHolder extends RecyclerView.ViewHolder{
@@ -357,10 +352,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int index) {
-            holder.postTitle.setText(postPreviews.get(index).getTitle());
-            holder.posterName.setText(postPreviews.get(index).getPosterName());
-            holder.postContent.setText(postPreviews.get(index).getContents());
-            String rep = String.valueOf(postPreviews.get(index).getReputation());
+            holder.postTitle.setText(posts.get(index).getTitle());
+            String username = getUsername(posts.get(index).getUserId());
+            holder.posterName.setText(username);
+            holder.postContent.setText(posts.get(index).getContents());
+            String rep = String.valueOf(posts.get(index).getReputation());
             holder.repCounter.setText(rep);
         }
 
@@ -401,9 +397,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openPost(View view) {
+        /*ArrayList<Comment> comments = new ArrayList<Comment>();
+
+        for (Comment comment : commentList){
+        }*/
+
         Intent intent = new Intent(this, ShowDiscussionBoardActivity.class);
         intent.putExtra("count", userCount);
+
         startActivity(intent);
+    }
+
+    public String getUsername(int userId) {
+        String username = "";
+
+        for(User user : userList){
+            if (user.getUserId() == userId){
+                username = user.getUsername();
+                break;
+            }
+        }
+
+        return username;
     }
 
     public void launchAddPost() {
@@ -426,6 +441,7 @@ public class MainActivity extends AppCompatActivity {
     public void launchRegistration() {
         Intent intent = new Intent(this, RegisterActivity.class);
         intent.putExtra("user_count", userCount);
+        intent.putExtra("user_list", userList);
         startActivity(intent);
     }
 
