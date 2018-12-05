@@ -22,7 +22,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ShowBoardActivity" />
         <activity android:name=".ShowDiscussionBoardActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />

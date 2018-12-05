@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
     private final int ADD_COMMENT_CODE = 2000;
     private final int LOGIN_CODE = 1001;
     private final int REGISTRATION_CODE = 1002;
+
+    int voteCounter = 0;
+    ImageButton upVote;
+    ImageButton downVote;
 
     public int userCount;
     public int postCount;
@@ -349,6 +354,39 @@ public class MainActivity extends AppCompatActivity {
                     (R.layout.board_preview_card, parent, false);
             return new ViewHolder(layout);
         }
+
+        /*
+        TODO: THIS IS WHERE UPVOTE AND DOWNVOTE HAPPENS, DO NOT REMOVE!
+
+
+        public void addListenerOnButtonClick() {
+            upVote = (ImageButton)findViewById(R.id.upVote);
+            downVote = (ImageButton)findViewById(R.id.downVote);
+
+            upVote.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    voteCounter = voteCounter + 1;
+                    reputation(voteCounter);
+                    Toast.makeText(MainActivity.this, "UP VOTE", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            downVote.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    voteCounter = voteCounter - 1;
+                    reputation(voteCounter);
+                    Toast.makeText(MainActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        public void reputation (int voteCount) {
+            TextView displayReputation = (TextView)findViewById(R.id.reputation_counter);
+            displayReputation.setText(voteCount);
+        }
+        */
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int index) {

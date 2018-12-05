@@ -77,7 +77,7 @@
                         android:id="@+id/add_comment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Comment"
+                        android:hint="@string/comment_content_prompt"
                         android:textSize="18dp"
                         />
 

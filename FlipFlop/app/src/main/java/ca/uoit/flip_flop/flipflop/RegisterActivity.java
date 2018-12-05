@@ -1,18 +1,15 @@
 package ca.uoit.flip_flop.flipflop;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
 
 import java.util.ArrayList;
 
@@ -58,12 +55,16 @@ public class RegisterActivity extends AppCompatActivity {
         String secondPass = confirmPassField.getText().toString();
         boolean userExists = false;
 
-        if (password.equals(secondPass)) {
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password) || TextUtils.isEmpty(secondPass)){
+            usernameField.setError("Username cannot be empty");
+            passwordField.setError("Password cannot be empty");
+            return;
+        } else if (password.equals(secondPass)) {
             ArrayList<User> userList =
-                    (ArrayList<User>)getIntent().getSerializableExtra("user_list");
+                    (ArrayList<User>) getIntent().getSerializableExtra("user_list");
 
-            for(User user : userList){
-                if (username.equals(user.getUsername())){
+            for (User user : userList) {
+                if (username.equals(user.getUsername())) {
                     Toast.makeText
                             (this, "Username already exists", Toast.LENGTH_SHORT).show();
                     userExists = true;
