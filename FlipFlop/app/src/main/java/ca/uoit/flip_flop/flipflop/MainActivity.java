@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     public int postCount;
     public int commentCount;
 
+    TextView username;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -421,7 +423,7 @@ public class MainActivity extends AppCompatActivity {
                 launchRegistration();
                 return true;
             case R.id.action_Logout:
-                //logout();
+                logout();
                 return true;
             case R.id.action_Settings:
                 //settings();
@@ -508,6 +510,13 @@ public class MainActivity extends AppCompatActivity {
         dbHelper.createDislike(2, testUser2.getUserId());
     }
 
+    public void logout() {
+        currentUser = null;
+        System.out.println(currentUser);
+        username = (TextView)findViewById(R.id.username);
+        username.setText(R.string.anon_user);
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode == ADD_POST_CODE){
             if (resultCode == RESULT_OK){
@@ -515,11 +524,23 @@ public class MainActivity extends AppCompatActivity {
             }
         } else if (requestCode == LOGIN_CODE){
             if (resultCode == RESULT_OK){
-                //TODO: db stuff
-            }
-        } else if (requestCode == REGISTRATION_CODE){
-            if (resultCode == RESULT_OK){
-                //TODO: db stuff
+                String id = data.getStringExtra("id");
+                if (id == null) return; // user didnt log in
+
+                // get user
+                for (User u : userList) {
+                    if (u.getUserId() == Integer.parseInt(id)) {
+                        currentUser = u;
+                        break;
+                    }
+                }
+
+                // logged in
+                username = (TextView)findViewById(R.id.username);
+                username.setText(currentUser.getUsername());
+                Toast.makeText(MainActivity.this, "Logged In", Toast.LENGTH_SHORT).show();
+
+
             }
         } else if (requestCode == ADD_COMMENT_CODE){
             if (resultCode == RESULT_OK){

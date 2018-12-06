@@ -21,4 +21,6 @@
     <string name="post_content_prompt">Max characters: 250</string>
     <string name="post_button">Post</string>
     <string name="comment_content_prompt">Max comment length: 250 characters</string>
+    <string name="anon_user">ANON</string>
+
 </resources>
