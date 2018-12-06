@@ -54,11 +54,10 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/post_title"
+                    android:id="@+id/preview_title"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:paddingLeft="5dp"
-                    android:onClick="openPost"
                     android:textSize="20dp"
                     android:textColor="#0000FF"
                     android:text="This is a fake title "/>
@@ -73,7 +72,7 @@
 
 
                 <TextView
-                    android:id="@+id/post_content"
+                    android:id="@+id/preview_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"

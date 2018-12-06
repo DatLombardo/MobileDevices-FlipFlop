@@ -1,10 +1,14 @@
 package ca.uoit.flip_flop.flipflop;
 
-public class Comment {
+import java.io.Serializable;
+
+public class Comment implements Serializable{
     private int commentId;
     private int commentNumber;
-    private String commenterName;
+    private int postId;
+    private int userId;
     private String comment;
+    private String commenterName;
 
     public int getCommentId() {
         return commentId;
@@ -14,12 +18,10 @@ public class Comment {
         this.commentId = commentId;
     }
 
-    public String getCommenterName() {
-        return commenterName;
-    }
+    public int getUserId() { return userId; }
 
-    public void setCommenterName(String commenterName) {
-        this.commenterName = commenterName;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getComment() {
@@ -30,11 +32,17 @@ public class Comment {
         this.comment = comment;
     }
 
-    public int getCommentNumber() {
-        return commentNumber;
+    public int getPostId() { return postId; }
+
+    public void setPostId(int postId) {
+        this.postId = postId;
     }
 
-    public void setCommentNumber(int commentNumber) {
-        this.commentNumber = commentNumber;
-    }
+    public String getCommenterName() { return commenterName; }
+
+    public void setCommenterName(String commenterName) { this.commenterName = commenterName; }
+
+    public int getCommentNumber() { return commentNumber; }
+
+    public void setCommentNumber(int commentNumber) { this.commentNumber = commentNumber; }
 }

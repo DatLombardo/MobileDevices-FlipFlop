@@ -1,6 +1,8 @@
 package ca.uoit.flip_flop.flipflop;
 
-public class Post {
+import java.io.Serializable;
+
+public class Post implements Serializable{
     private int postId;
     private String title;
     private String contents;

@@ -177,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
                         Comment comm = new Comment();
                         comm.setCommentId(commentId);
                         comm.setComment(contents);
+                        comm.setUserId(userId);
                         comm.setCommentNumber(commentNum);
 
                         /**
@@ -267,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public ArrayList<Comment> getPostComments(int postId){
-        ArrayList<Comment> comments = new ArrayList();
+        ArrayList<Comment> comments = new ArrayList<Comment>();
         for (Comment currComment : commentList) {
             //System.out.println(currComment.getCommentId());
             if(currComment.getCommentId() == postId){
@@ -342,9 +343,9 @@ public class MainActivity extends AppCompatActivity {
             ViewHolder(View view){
                 super(view);
                 customView = view;
-                postTitle = view.findViewById(R.id.post_title);
+                postTitle = view.findViewById(R.id.preview_title);
                 posterName = view.findViewById(R.id.poster_name);
-                postContent = view.findViewById(R.id.post_content);
+                postContent = view.findViewById(R.id.preview_content);
                 repCounter = view.findViewById(R.id.reputation_counter);
                 upVote = view.findViewById(R.id.upVote);
                 downVote = view.findViewById(R.id.downVote);
@@ -364,6 +365,13 @@ public class MainActivity extends AppCompatActivity {
                         post.setReputation(post.getReputation() - 1);
                         DatabaseReference ref = postTable.child(Integer.toString(post.getPostId()));
                         ref.child("reputation").setValue(post.getReputation());
+                    }
+                });
+
+                postTitle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openPost(post);
                     }
                 });
 
@@ -426,15 +434,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void openPost(View view) {
-        /*ArrayList<Comment> comments = new ArrayList<Comment>();
+    public void openPost(Post post) {
 
-        for (Comment comment : commentList){
-        }*/
+        ArrayList<Comment> comments = new ArrayList<Comment>();
+        comments = getPostComments(post.getPostId());
 
         Intent intent = new Intent(this, ShowDiscussionBoardActivity.class);
         intent.putExtra("count", userCount);
-
+        intent.putExtra("poster", getUsername(post.getUserId()));
+        intent.putExtra("post", post);
+        intent.putExtra("comments", comments);
         startActivity(intent);
     }
 
