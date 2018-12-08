@@ -11,7 +11,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class RegisterActivity extends AppCompatActivity {
@@ -53,6 +56,11 @@ public class RegisterActivity extends AppCompatActivity {
         String username = usernameField.getText().toString();
         String password = passwordField.getText().toString();
         String secondPass = confirmPassField.getText().toString();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+        Date todayDate = Calendar.getInstance().getTime();
+        String todayString = formatter.format(todayDate);
+
         boolean userExists = false;
 
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password) || TextUtils.isEmpty(secondPass)){
@@ -78,6 +86,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 userTable.child(newCount).child("username").setValue(username);
                 userTable.child(newCount).child("password").setValue(password);
+                userTable.child(newCount).child("dateCreated").setValue(todayString);
                 Toast.makeText(this, "Registration Complete", Toast.LENGTH_SHORT).show();
                 finish();
             }

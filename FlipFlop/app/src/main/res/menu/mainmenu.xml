@@ -31,9 +31,9 @@
     </item>
 
     <item
-        android:id="@+id/action_Settings"
+        android:id="@+id/action_Profile"
         app:showAsAction="never"
-        android:title="Settings">
+        android:title="@string/profile_button">
     </item>
 
 </menu>

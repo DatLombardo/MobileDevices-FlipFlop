@@ -81,19 +81,12 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         final BoardAdapter boardAdapter = new BoardAdapter(postList);
 
-        //Database stuff
-        dbHelper.deleteAllUsers();
+        //SQL Database Stuff, Used for Manual Population.
+        //addFillerLikes();
+        //addFillerDislikes();
 
-        addFillerUsers();
-        addFillerLikes();
-        addFillerDislikes();
-        List<Integer> likes;
-        //User testUserRish = this.users.get(0);
-        //likes = dbHelper.getUserLikes(testUserRish.getUserId());
-        /*
-        for(Integer el : likes){
-            System.out.println(el);
-        }*/
+        //dbHelper.deleteAllDislikes();
+        //dbHelper.deleteAllLikes();
 
         userTable = FirebaseDatabase.getInstance().getReference("Users");
         commentTable = FirebaseDatabase.getInstance().getReference().child("Comments");
@@ -101,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(boardAdapter);
 
+        /**
+         * Used to read firebase database, listens for changes in Users table.
+         */
         userTable.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot userSnapshot) {
@@ -132,6 +128,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * Used to read firebase database, listens for changes in Posts table.
+         */
         postTable.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot userSnapshot) {
@@ -167,6 +166,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * Used to read firebase database, listens for changes in Comments table.
+         */
         commentTable.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot userSnapshot) {
@@ -202,40 +204,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-    }
-    //TODO: take this out
-    public void testDatabase(View view) {
-        userTable = FirebaseDatabase.getInstance().getReference("Users");
-        userTable.push().setValue("5");
-        System.out.println("Test");
-        User testUser = new User();
-        testUser.setUsername("Testing Mans");
-        testUser.setPassword("sdsdsd");
-        testUser.setDateCreated("2018-11-25");
-
-        createUser(testUser);
-
-        ArrayList<Post> testUPosts = getUserPosts(1);
-
-        ArrayList<Comment> testComments = getPostComments(1);
-
-        for (Post item : testUPosts) {
-            System.out.println(item.getTitle() + "\t" + item.getContents());
-        }
-
-        for (Comment item : testComments) {
-            System.out.println(Integer.toString(item.getCommentNumber()) + "\t" + item.getComment());
-        }
-
-        int commCount = getCommentCount(testComments);
-
-        //createPost(String title, String contents, int rep, int uId)
-
-        //createComment(int postId, int commCount, String contents, int uId)
-
-        createPost("Test Item", "This is a test", 0, 1);
-        createComment(1, commCount, "Test Comment, Delete", 1);
-
     }
 
     /**
@@ -281,22 +249,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return comments;
-    }
-
-    //TODO: remove this
-    public int getCommentCount(ArrayList<Comment> commList) {
-        int count = 0;
-        if (commList.isEmpty()) {
-            return count;
-        } else {
-            for (Comment currComment : commentList) {
-                if (currComment.getCommentNumber() > count) {
-                    count = currComment.getCommentNumber();
-                }
-            }
-            return count;
-        }
-
     }
 
     /**
@@ -356,9 +308,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_Logout:
                 logout();
                 return true;
-            case R.id.action_Settings:
-                //settings();
+            case R.id.action_Profile:
+                launchProfile();
                 return true;
+
             case R.id.action_Add:
                 launchAddPost();
                 return true;
@@ -441,31 +394,48 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //TODO: remove this if not necessary
-    public void addFillerUsers() {
-        dbHelper.createUser("Danny", "yoyo", "red", "9/11/2018");
-        dbHelper.createUser("Lachlan", "yoyo", "red", "9/11/2018");
-        users = dbHelper.getAllUsers();
+    /**
+     * start profile activity
+     */
+    public void launchProfile() {
+        if (currentUser != null) {
+            Intent intent = new Intent(this, Profile.class);
+            intent.putExtra("user_id", currentUser.getUserId());
+            intent.putExtra("user_list", userList);
+            intent.putExtra("post_list", postList);
+            startActivity(intent);
+
+        } else {
+            Intent intent = new Intent(this, Profile.class);
+            intent.putExtra("user_id", 0);
+            intent.putExtra("user_list", userList);
+            intent.putExtra("post_list", postList);
+            startActivity(intent);
+        }
     }
 
-    //TODO: remove this if not necessary
-    public void addFillerLikes() {
-        dbHelper.deleteAllLikes();
-        User testUser1 = this.users.get(0);
-        User testUser2 = this.users.get(1);
-        dbHelper.createLike(1, testUser1.getUserId());
-        dbHelper.createLike(2, testUser1.getUserId());
-        dbHelper.createLike(1, testUser2.getUserId());
-        dbHelper.createLike(3, testUser2.getUserId());
+    /**
+     * addFillerLikes
+     *
+     * Used to manually populate SQL local database, usage commented out.
+     */
+    public void addFillerLikes(){
+        //dbHelper.deleteAllLikes();
+        dbHelper.createLike(1, 1);
+        dbHelper.createLike(2, 1);
+        dbHelper.createLike(1, 2);
+        dbHelper.createLike(3, 2);
     }
 
-    //TODO: remove this if not necessary
-    public void addFillerDislikes() {
-        dbHelper.deleteAllDislikes();
-        User testUser1 = this.users.get(0);
-        User testUser2 = this.users.get(1);
-        dbHelper.createDislike(3, testUser1.getUserId());
-        dbHelper.createDislike(2, testUser2.getUserId());
+    /**
+     * addFillerDislikes
+     *
+     * Used to manually populate SQL local database, usage commented out.
+     */
+    public void addFillerDislikes(){
+        //dbHelper.deleteAllDislikes();
+        dbHelper.createDislike(3, 1);
+        dbHelper.createDislike(2, 2);
     }
 
     /**
@@ -598,6 +568,11 @@ public class MainActivity extends AppCompatActivity {
                         post.setReputation(post.getReputation() + 1);
                         DatabaseReference ref = postTable.child(Integer.toString(post.getPostId()));
                         ref.child("reputation").setValue(post.getReputation());
+                        if (currentUser != null) {
+                            dbHelper.createLike(post.getPostId(), currentUser.getUserId());
+                        } else {
+                            dbHelper.createLike(post.getPostId(), 0);
+                        }
                     }
                 });
 
@@ -607,6 +582,11 @@ public class MainActivity extends AppCompatActivity {
                         post.setReputation(post.getReputation() - 1);
                         DatabaseReference ref = postTable.child(Integer.toString(post.getPostId()));
                         ref.child("reputation").setValue(post.getReputation());
+                        if (currentUser != null) {
+                            dbHelper.createDislike(post.getPostId(), currentUser.getUserId());
+                        } else {
+                            dbHelper.createDislike(post.getPostId(), 0);
+                        }
                     }
                 });
 

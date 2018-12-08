@@ -3,7 +3,7 @@
     <string name="login_button">Login</string>
     <string name="logout_button">Logout</string>
     <string name="register_button">Register</string>
-    <string name="settings_button">Settings</string>
+    <string name="profile_button">Profile</string>
     <string name="post_title">Title: </string>
     <string name="sample_text">This is sample text</string>
     <string name="sample_description">Astronomy is the scientific study of celestial objects
@@ -22,5 +22,9 @@
     <string name="post_button">Post</string>
     <string name="comment_content_prompt">Max comment length: 250 characters</string>
     <string name="anon_user">ANON</string>
+    <string name="post_liked">Posts Liked</string>
+    <string name="post_disliked">Posts Disliked</string>
+    <string name="date_created">Date Created:</string>
+
 
 </resources>

@@ -12,53 +12,36 @@ import java.util.List;
 public class BoardDBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_FILENAME = "randdit.db";
-    public static final String TABLE_USERS = "users";
-    public static final String TABLE_POST = "post";
-    public static final String TABLE_DISCUSSION = "discussion";
     public static final String TABLE_LIKES = "likes";
     public static final String TABLE_DISLIKES = "dislikes";
 
     /**
-     *  CREATE_USERS_STATEMENT
      *  CREATE_LIKES_STATEMENT
      *  CREATE_DISLIKES_STATEMENT
      *
      * SQL Statements to create each of the given tables into the database
      */
-    public static final String CREATE_USERS_STATEMENT = "" +
-            "CREATE TABLE " + TABLE_USERS + " (" +
-            "  _id INTEGER PRIMARY KEY AUTOINCREMENT," +
-            "  username TEXT NOT NULL," +
-            "  password TEXT NOT NULL," +
-            "  iconFileName TEXT NOT NULL," +
-            "  dateCreated TEXT NOT NULL" +
-            ")";
 
     public static final String CREATE_LIKES_STATEMENT = "" +
             "CREATE TABLE " + TABLE_LIKES + " (" +
             "  _id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "  post_id INTEGER NOT NULL," +
-            "  user_id INTEGER NOT NULL," +
-            "FOREIGN KEY(user_id) REFERENCES users(_id)" +
+            "  user_id INTEGER NOT NULL" +
             ")";
 
     public static final String CREATE_DISLIKES_STATEMENT = "" +
             "CREATE TABLE " + TABLE_DISLIKES + " (" +
             "  _id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "  post_id INTEGER NOT NULL," +
-            "  user_id INTEGER NOT NULL," +
-            "FOREIGN KEY(user_id) REFERENCES users(_id)" +
+            "  user_id INTEGER NOT NULL" +
             ")";
 
     /**
-     * DROP_USERS_STATEMENT
      * DROP_LIKES_STATEMENT
      * DROP_DISLIKES_STATEMENT
      * SQL Statements for dropping (removing) the given table.
      *
      */
-    public static final String DROP_USERS_STATEMENT = "" +
-            "DROP TABLE " + TABLE_USERS;
 
     public static final String DROP_LIKES_STATEMENT = "" +
             "DROP TABLE " + TABLE_LIKES;
@@ -72,7 +55,6 @@ public class BoardDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_USERS_STATEMENT);
         db.execSQL(CREATE_LIKES_STATEMENT);
         db.execSQL(CREATE_DISLIKES_STATEMENT);
     }
@@ -86,49 +68,10 @@ public class BoardDBHelper extends SQLiteOpenHelper {
             // downgrade
 
         }
-
-        db.execSQL(DROP_USERS_STATEMENT);
-        db.execSQL(CREATE_USERS_STATEMENT);
         db.execSQL(DROP_LIKES_STATEMENT);
         db.execSQL(CREATE_LIKES_STATEMENT);
         db.execSQL(CREATE_DISLIKES_STATEMENT);
         db.execSQL(DROP_DISLIKES_STATEMENT);
-    }
-
-    /**
-     * createUser
-     * Create an element based on passed parameters in User table.
-     *
-     * @param username
-     * @param password
-     * @param iconFileName
-     * @param dateCreated
-     * @return
-     */
-    public User createUser(String username,
-                           String password,
-                           String iconFileName,
-                           String dateCreated) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put("username", username);
-        values.put("password", password);
-        values.put("iconFileName", iconFileName);
-        values.put("dateCreated", dateCreated);
-
-        long id = db.insert(TABLE_USERS, null, values);
-
-        //  wrap everything up into an entity object
-        User newUser = new User();
-        newUser.setUsername(username);
-        newUser.setPassword(password);
-        //newUser.setIconFileName(iconFileName);
-        newUser.setDateCreated(dateCreated);
-        newUser.setUserId((int) id);
-
-        return newUser;
     }
 
     /**
@@ -147,7 +90,20 @@ public class BoardDBHelper extends SQLiteOpenHelper {
         values.put("post_id", post_id);
         values.put("user_id", user_id);
 
-        long id = db.insert(TABLE_LIKES, null, values);
+        //Check to see if post has already been liked
+        Cursor cursor = null;
+
+        String check = "SELECT * FROM " + TABLE_LIKES + " WHERE post_id="
+                + post_id + " AND user_id=" + user_id;
+
+        cursor= db.rawQuery(check,null);
+
+        if(cursor.getCount()>0){
+            System.out.println("User has already liked this post");
+        }else{
+            long id = db.insert(TABLE_LIKES, null, values);
+        }
+        cursor.close();
 
     }
 
@@ -167,108 +123,22 @@ public class BoardDBHelper extends SQLiteOpenHelper {
         values.put("post_id", post_id);
         values.put("user_id", user_id);
 
-        long id = db.insert(TABLE_DISLIKES, null, values);
+        //Check to see if post has already been liked
+        Cursor cursor = null;
 
-    }
+        String check = "SELECT * FROM "+ TABLE_DISLIKES + " WHERE post_id="
+                + post_id + " AND user_id=" + user_id;
 
-    /**
-     * getUser
-     * Queries to find one user based on primary key (id)
-     *
-     * @param id
-     * @return
-     */
-    public User getUser(long id) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        cursor= db.rawQuery(check,null);
 
-        User user = null;
-
-        String[] columns = new String[] {
-                "_id",
-                "username",
-                "password",
-                "iconFileName",
-                "dateCreated"
-        };
-
-        String[] args = new String[] {
-                "" + id
-        };
-
-        Cursor cursor = db.query(TABLE_USERS, columns,
-                "_id = ?", args,
-                "", "",
-                "");
-
-        if (cursor.getCount() >= 1) {
-            cursor.moveToFirst();
-
-            String username = cursor.getString(1);
-            String password = cursor.getString(2);
-            String iconFileName = cursor.getString(3);
-            String dateCreated = cursor.getString(4);
-
-            user = new User();
-            user.setUsername(username);
-            user.setPassword(password);
-            //user.setIconFileName(iconFileName);
-            user.setDateCreated(dateCreated);
-            user.setUserId((int) id);
+        if(cursor.getCount()>0){
+            System.out.println("User has already disliked  this post");
+        }else{
+            long id = db.insert(TABLE_DISLIKES, null, values);
         }
+        cursor.close();
 
-        return user;
     }
-
-    /**
-     * getAllUsers
-     * Reads whole Users table into list of elements
-     *
-     * @return
-     */
-    public List<User> getAllUsers() {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String[] columns = new String[] {
-                "_id",
-                "username",
-                "password",
-                "iconFileName",
-                "dateCreated"
-        };
-
-        String[] args = new String[] {
-        };
-
-        Cursor cursor = db.query(TABLE_USERS, columns,
-                "", args,
-                "", "",
-                "username");
-
-        List<User> users = new ArrayList<>();
-
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                long id = cursor.getLong(0);
-                String username = cursor.getString(1);
-                String password = cursor.getString(2);
-                String iconFileName = cursor.getString(3);
-                String dateCreated = cursor.getString(4);
-
-                User user = new User();
-                user.setUsername(username);
-                user.setPassword(password);
-                //user.setIconFileName(iconFileName);
-                user.setDateCreated(dateCreated);
-                user.setUserId((int) id);
-
-                users.add(user);
-
-                cursor.moveToNext();
-            }
-        }
-        return users;
-    }
-
 
     /**
      * getUserLikes
@@ -389,14 +259,4 @@ public class BoardDBHelper extends SQLiteOpenHelper {
 
         db.delete(TABLE_DISLIKES, "", new String[] {});
     }
-
-    /**
-     * deleteAllUsers
-     */
-    public void deleteAllUsers() {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        db.delete(TABLE_USERS, "", new String[] {});
-    }
-
 }

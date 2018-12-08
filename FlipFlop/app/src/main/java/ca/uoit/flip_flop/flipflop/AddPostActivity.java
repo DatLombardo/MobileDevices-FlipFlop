@@ -31,10 +31,6 @@ public class AddPostActivity extends AppCompatActivity {
 
     private int userId;
 
-    /**
-     *
-     * @param savedInstanceState
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -6,16 +6,11 @@ public class User implements Serializable{
     private int userId;
     private String username;
     private String password;
-    //private String iconFileName;
     private String dateCreated;
 
-    /*
-    Date todayDate = Calendar.getInstance().getTime();
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
-    String todayString = formatter.format(todayDate);
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    /**
+     * Getter / Setters for User Class
      */
-
 
     public int getUserId() {
         return userId;
@@ -41,14 +36,6 @@ public class User implements Serializable{
         this.password = password;
     }
 
-    /*public String getIconFileName() {
-        return iconFileName;
-    }
-
-    public void setIconFileName(String iconFileName) {
-        this.iconFileName = iconFileName;
-    }
-    */
     public String getDateCreated() {
         return dateCreated;
     }
@@ -56,22 +43,4 @@ public class User implements Serializable{
     public void setDateCreated(String dateCreated) {
         this.dateCreated = dateCreated;
     }
-    /*
-    public int[] getLikes() {
-        return likes;
-    }
-
-    public void setLikes(int[] likes) {
-        this.likes = likes;
-    }
-
-
-    public int[] getPosts() {
-        return posts;
-    }
-
-    public void setPosts(int[] posts) {
-        this.posts = posts;
-    }
-    */
 }

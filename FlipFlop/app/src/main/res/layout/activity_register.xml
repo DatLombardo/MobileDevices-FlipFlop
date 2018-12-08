@@ -8,9 +8,18 @@
     android:layout_gravity="center_horizontal"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context=".RegisterActivity">
+    tools:context=".RegisterActivity"
+    android:background="@color/lightGrey">
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textSize="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
+        android:text="@string/register_prompt"
+        android:textColor="@color/darkBlue"/>
 
     <EditText
         android:id="@+id/username_register"
@@ -18,7 +27,9 @@
         android:layout_width="wrap_content"
         android:textSize="16dp"
         android:maxLength="16"
-        android:hint="@string/username_field"/>
+        android:hint="@string/username_field"
+        android:textColorHint="@color/black"
+        android:textColor="@color/black"/>
 
     <EditText
         android:id="@+id/password_register"
@@ -28,7 +39,9 @@
         android:textSize="16dp"
         android:inputType="textPassword"
         android:maxLength="16"
-        android:hint="@string/password_field"/>
+        android:hint="@string/password_field"
+        android:textColorHint="@color/black"
+        android:textColor="@color/black"/>
 
     <EditText
         android:id="@+id/password_confirm_register"
@@ -38,7 +51,9 @@
         android:textSize="16dp"
         android:inputType="textPassword"
         android:maxLength="16"
-        android:hint="@string/confirm_pass_field"/>
+        android:hint="@string/confirm_pass_field"
+        android:textColorHint="@color/black"
+        android:textColor="@color/black"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -51,7 +66,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="doRegistration"
-            android:text="@string/register_button"/>
+            android:layout_margin="5dp"
+            android:text="@string/register_button"
+            android:background="@color/green"
+            android:textColor="@color/black"/>
 
         <Button
             android:id="@+id/register_cancel_button"
@@ -59,7 +77,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="cancelRegistration"
-            android:text="@string/cancel_button"/>
+            android:layout_margin="5dp"
+            android:text="@string/cancel_button"
+            android:background="@color/red"
+            android:textColor="@color/black"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -24,7 +24,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/silver">
 
             <LinearLayout
                 android:id="@+id/username_title"
@@ -50,7 +51,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:paddingLeft="5dp"
-                        android:text = "USERNAME"/>
+                        android:text = "USERNAME"
+                        android:textColor="@color/darkBlue"/>
 
                 </LinearLayout>
 
@@ -60,7 +62,7 @@
                     android:layout_height="match_parent"
                     android:paddingLeft="5dp"
                     android:textSize="20dp"
-                    android:textColor="#0000FF"
+                    android:textColor="@color/blue"
                     android:text="This is a fake title "/>
 
             </LinearLayout>
@@ -78,7 +80,8 @@
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:text="This is where the user will post things that can be liked or disliked"
-                    android:textSize="14dp" />
+                    android:textSize="14dp"
+                    android:textColor="@color/black"/>
 
             </LinearLayout>
 
@@ -104,6 +107,7 @@
                 android:textStyle="bold"
                 android:textSize="18dp"
                 android:layout_below="@id/upVote"
+                android:textColor="@color/black"
                 />
             <ImageButton
                 android:id="@+id/downVote"

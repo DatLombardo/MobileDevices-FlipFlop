@@ -21,7 +21,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/silver">
 
             <TextView
                 android:id="@+id/commenter_name"
@@ -29,14 +30,16 @@
                 android:layout_height="wrap_content"
                 android:text="idiot"
                 android:layout_weight="1"
-                android:padding="6dp" />
+                android:padding="6dp"
+                android:textColor="@color/darkBlue"/>
 
             <TextView
                 android:id="@+id/comment_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="6dp" />
+                android:padding="6dp"
+                android:textColor="@color/black"/>
 
         </LinearLayout>
 

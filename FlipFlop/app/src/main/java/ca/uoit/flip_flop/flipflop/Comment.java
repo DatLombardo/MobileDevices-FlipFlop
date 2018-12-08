@@ -10,6 +10,10 @@ public class Comment implements Serializable{
     private String comment;
     private String commenterName;
 
+    /**
+     * Getter / Setters for Comment Class
+     */
+
     public int getCommentId() {
         return commentId;
     }

@@ -8,7 +8,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/lightGrey">
 
     <RelativeLayout
         android:id="@+id/topic_username"
@@ -19,6 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="@color/darkBlue"
             android:text="ANON"/>
         <Spinner
             android:id="@+id/select_topic_spinner"
@@ -33,7 +36,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:scrollbars="vertical"/>
+        android:scrollbars="vertical"
+        android:layout_margin="5dp"/>
 
     <!-- TODO: Fix this
     <android.support.v7.widget.RecyclerView
