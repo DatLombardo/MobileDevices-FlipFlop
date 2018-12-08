@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +28,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
 public class MainActivity extends AppCompatActivity {
@@ -52,13 +56,27 @@ public class MainActivity extends AppCompatActivity {
 
     TextView username;
 
+    public int[] imageIds;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // store image ids
+        imageIds = new int[] {
+                R.drawable.p1,
+                R.drawable.p2,
+                R.drawable.p3,
+                R.drawable.p4,
+                R.drawable.p5,
+                R.drawable.p6,
+                R.drawable.p7,
+                R.drawable.p8
+        };
+
         //recycler view stuff
-        final RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerview_boards);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview_boards);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         final BoardAdapter boardAdapter = new BoardAdapter(postList);
@@ -104,14 +122,7 @@ public class MainActivity extends AppCompatActivity {
                     userList.add(user);
 
                     userCount = id;
-                    //System.out.println(userCount);
                 }
-                //See the output from the database read
-                /*
-                for (int i = 0; i < userList.size(); i++) {
-                    System.out.println(userList.get(i).getUsername());
-                }
-                */
 
             }
 
@@ -119,8 +130,6 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-
-
         });
 
         postTable.addValueEventListener(new ValueEventListener() {
@@ -147,11 +156,8 @@ public class MainActivity extends AppCompatActivity {
 
                     postCount = id;
                 }
-                //See the output from the database read
-                /*
-                for (int i = 0; i < postList.size(); i++) {
-                    System.out.println(postList.get(i).getTitle());
-                }*/
+                //reverse posts
+                Collections.reverse(postList);
                 boardAdapter.notifyDataSetChanged();
             }
 
@@ -171,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 for (DataSnapshot comments : allComments) {
                     //System.out.println(currComment);
                     int commentId = Integer.parseInt(comments.getKey());
-                    for (DataSnapshot comment : comments.getChildren()){
+                    for (DataSnapshot comment : comments.getChildren()) {
                         int commentNum = Integer.parseInt(comment.getKey());
                         String contents = comment.child("contents").getValue(String.class);
                         int userId = comment.child("user_id").getValue(Integer.class);
@@ -182,22 +188,12 @@ public class MainActivity extends AppCompatActivity {
                         comm.setUserId(userId);
                         comm.setCommentNumber(commentNum);
 
-                        /**
-                         * TODO::
-                         * CREATE A FUNCTION TO GET USER NAME GIVEN USERID
-                         */
-                        //comm.setCommenterName(??????);
                         commentList.add(comm);
 
                     }
 
                     commentCount = commentId;
                 }
-                //See the output from the database read
-                /*
-                for (int i = 0; i < commentList.size(); i++) {
-                    System.out.println(commentList.get(i).getComment() + " " +commentList.get(i).getCommentId());
-                }*/
 
             }
 
@@ -206,10 +202,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
-
+    //TODO: take this out
     public void testDatabase(View view) {
         userTable = FirebaseDatabase.getInstance().getReference("Users");
         userTable.push().setValue("5");
@@ -244,9 +238,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
-    public void createUser(User user){
+    /**
+     * creates a new user and adds it to the DB
+     * @param user
+     */
+    public void createUser(User user) {
         userTable.child(Integer.toString(userCount + 1))
                 .child("username").setValue(user.getUsername());
         userTable.child(Integer.toString(userCount + 1))
@@ -257,38 +253,45 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("User Created");
     }
 
-    public ArrayList<Post> getUserPosts(int userId){
+    /**
+     * gets posts linked to the user_id
+     * @param userId
+     * @return
+     */
+    public ArrayList<Post> getUserPosts(int userId) {
         ArrayList<Post> userPosts = new ArrayList();
         for (Post currPost : postList) {
-            //System.out.println(currPost.getUserId());
-            if(currPost.getUserId() == userId){
+            if (currPost.getUserId() == userId) {
                 userPosts.add(currPost);
             }
         }
         return userPosts;
     }
 
-
-    public ArrayList<Comment> getPostComments(int postId){
+    /**
+     * gets comments related to the post_id
+     * @param postId
+     * @return
+     */
+    public ArrayList<Comment> getPostComments(int postId) {
         ArrayList<Comment> comments = new ArrayList<Comment>();
         for (Comment currComment : commentList) {
-            //System.out.println(currComment.getCommentId());
-            if(currComment.getCommentId() == postId){
+            if (currComment.getCommentId() == postId) {
                 comments.add(currComment);
             }
         }
         return comments;
     }
 
-    public int getCommentCount(ArrayList<Comment> commList){
+    //TODO: remove this
+    public int getCommentCount(ArrayList<Comment> commList) {
         int count = 0;
-        if (commList.isEmpty()){
+        if (commList.isEmpty()) {
             return count;
-        }
-        else{
+        } else {
             for (Comment currComment : commentList) {
-                if (currComment.getCommentNumber() > count){
-                    count++;
+                if (currComment.getCommentNumber() > count) {
+                    count = currComment.getCommentNumber();
                 }
             }
             return count;
@@ -296,7 +299,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void createPost(String title, String contents, int rep, int uId){
+    /**
+     * adds post to the DB, and increments the post count
+     * @param title
+     * @param contents
+     * @param rep
+     * @param uId
+     */
+    public void createPost(String title, String contents, int rep, int uId) {
 
         //postCount
         postTable.child(Integer.toString(postCount + 1))
@@ -304,106 +314,27 @@ public class MainActivity extends AppCompatActivity {
         postTable.child(Integer.toString(postCount + 1))
                 .child("contents").setValue(contents);
         postTable.child(Integer.toString(postCount + 1))
-                .child("reputation").setValue(Integer.toString(rep));
+                .child("reputation").setValue(rep);
         postTable.child(Integer.toString(postCount + 1))
-                .child("user_id").setValue(Integer.toString(uId));
+                .child("user_id").setValue(uId);
 
         System.out.println("Post Created");
     }
 
-    public void createComment(int postId, int commCount, String contents, int uId){
+    /**
+     * adds comment content and user_id to DB
+     * @param postId
+     * @param commCount
+     * @param contents
+     * @param uId
+     */
+    public void createComment(int postId, int commCount, String contents, int uId) {
 
         //postCount
         commentTable.child(Integer.toString(postId)).child(Integer.toString(commCount))
                 .child("contents").setValue(contents);
         commentTable.child(Integer.toString(postId)).child(Integer.toString(commCount))
                 .child("user_id").setValue(Integer.toString(uId));
-    }
-
-
-
-
-    public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder>{
-        private ArrayList<Post> posts = new ArrayList<Post>();
-
-        BoardAdapter(ArrayList<Post> postList){
-            posts = postList;
-        }
-
-        class ViewHolder extends RecyclerView.ViewHolder{
-            Post post;
-            View customView;
-            TextView postTitle;
-            TextView posterName;
-            TextView postContent;
-            TextView repCounter;
-            ImageButton upVote;
-            ImageButton downVote;
-
-            int index = 0;
-
-            ViewHolder(View view){
-                super(view);
-                customView = view;
-                postTitle = view.findViewById(R.id.preview_title);
-                posterName = view.findViewById(R.id.poster_name);
-                postContent = view.findViewById(R.id.preview_content);
-                repCounter = view.findViewById(R.id.reputation_counter);
-                upVote = view.findViewById(R.id.upVote);
-                downVote = view.findViewById(R.id.downVote);
-
-                upVote.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        post.setReputation(post.getReputation() + 1);
-                        DatabaseReference ref = postTable.child(Integer.toString(post.getPostId()));
-                        ref.child("reputation").setValue(post.getReputation());
-                    }
-                });
-
-                downVote.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        post.setReputation(post.getReputation() - 1);
-                        DatabaseReference ref = postTable.child(Integer.toString(post.getPostId()));
-                        ref.child("reputation").setValue(post.getReputation());
-                    }
-                });
-
-                postTitle.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        openPost(post);
-                    }
-                });
-
-            }
-        }
-
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LinearLayout layout = (LinearLayout) LayoutInflater.from(parent.getContext()).inflate
-                    (R.layout.board_preview_card, parent, false);
-            return new ViewHolder(layout);
-        }
-
-
-        @Override
-        public void onBindViewHolder(ViewHolder holder, int index) {
-            holder.index = index;
-            holder.post = posts.get(index);
-            holder.postTitle.setText(posts.get(index).getTitle());
-            String username = getUsername(posts.get(index).getUserId());
-            holder.posterName.setText(username);
-            holder.postContent.setText(posts.get(index).getContents());
-            String rep = String.valueOf(posts.get(index).getReputation());
-            holder.repCounter.setText(rep);
-        }
-
-        @Override
-        public int getItemCount() {
-            return posts.size();
-        }
     }
 
     @Override
@@ -436,24 +367,33 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * gets the data from the db and fills the ShowDiscussionBoardActivity
+     * @param post
+     */
     public void openPost(Post post) {
-
-        ArrayList<Comment> comments = new ArrayList<Comment>();
-        comments = getPostComments(post.getPostId());
-
+        ArrayList<Comment> comments = getPostComments(post.getPostId());
         Intent intent = new Intent(this, ShowDiscussionBoardActivity.class);
         intent.putExtra("count", userCount);
         intent.putExtra("poster", getUsername(post.getUserId()));
+        if (currentUser != null)
+            intent.putExtra("user_id", currentUser.getUserId());
         intent.putExtra("post", post);
         intent.putExtra("comments", comments);
+        intent.putExtra("post_id", post.getPostId());
         startActivity(intent);
     }
 
+    /**
+     * gets the username by user_id
+     * @param userId
+     * @return
+     */
     public String getUsername(int userId) {
         String username = "";
 
-        for(User user : userList){
-            if (user.getUserId() == userId){
+        for (User user : userList) {
+            if (user.getUserId() == userId) {
                 username = user.getUsername();
                 break;
             }
@@ -462,11 +402,15 @@ public class MainActivity extends AppCompatActivity {
         return username;
     }
 
+    /**
+     * adds post to the main activity, if user is registered and logged in, if not display toast
+     */
     public void launchAddPost() {
         if (currentUser != null) {
             Intent intent = new Intent(this, AddPostActivity.class);
 
             intent.putExtra("user_id", currentUser.getUserId());
+            intent.putExtra("post_id", postCount);
             startActivityForResult(intent, ADD_POST_CODE);
 
         } else {
@@ -474,56 +418,83 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * start login activity
+     */
     public void launchLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivityForResult(intent, LOGIN_CODE);
     }
 
+    /**
+     * start registration activity
+     */
     public void launchRegistration() {
+        if (currentUser != null) {
+            Toast.makeText(this, "User already registered", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Intent intent = new Intent(this, RegisterActivity.class);
         intent.putExtra("user_count", userCount);
         intent.putExtra("user_list", userList);
         startActivity(intent);
     }
 
-    public void addFillerUsers(){
+    //TODO: remove this if not necessary
+    public void addFillerUsers() {
         dbHelper.createUser("Danny", "yoyo", "red", "9/11/2018");
         dbHelper.createUser("Lachlan", "yoyo", "red", "9/11/2018");
         users = dbHelper.getAllUsers();
     }
 
-    public void addFillerLikes(){
+    //TODO: remove this if not necessary
+    public void addFillerLikes() {
         dbHelper.deleteAllLikes();
         User testUser1 = this.users.get(0);
-        User testUser2= this.users.get(1);
+        User testUser2 = this.users.get(1);
         dbHelper.createLike(1, testUser1.getUserId());
         dbHelper.createLike(2, testUser1.getUserId());
         dbHelper.createLike(1, testUser2.getUserId());
         dbHelper.createLike(3, testUser2.getUserId());
     }
 
-    public void addFillerDislikes(){
+    //TODO: remove this if not necessary
+    public void addFillerDislikes() {
         dbHelper.deleteAllDislikes();
         User testUser1 = this.users.get(0);
-        User testUser2= this.users.get(1);
+        User testUser2 = this.users.get(1);
         dbHelper.createDislike(3, testUser1.getUserId());
         dbHelper.createDislike(2, testUser2.getUserId());
     }
 
+    /**
+     * Logout user if user is logged in
+     */
     public void logout() {
         currentUser = null;
         System.out.println(currentUser);
-        username = (TextView)findViewById(R.id.username);
+        username = (TextView) findViewById(R.id.username);
         username.setText(R.string.anon_user);
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        if (requestCode == ADD_POST_CODE){
-            if (resultCode == RESULT_OK){
+    /**
+     * sets the results for activities such as login
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ADD_POST_CODE) {
+            if (resultCode == RESULT_OK) {
                 //TODO: db stuff
+                String postContent = data.getStringExtra("post_title");
+                String postTitle = data.getStringExtra("post_content");
+                int userId = data.getIntExtra("user_id", 0);
+                createPost(postTitle, postContent, 0, userId);
             }
-        } else if (requestCode == LOGIN_CODE){
-            if (resultCode == RESULT_OK){
+        } else if (requestCode == LOGIN_CODE) {
+            if (resultCode == RESULT_OK) {
                 String id = data.getStringExtra("id");
                 if (id == null) return; // user didnt log in
 
@@ -536,15 +507,119 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 // logged in
-                username = (TextView)findViewById(R.id.username);
+                username = (TextView) findViewById(R.id.username);
                 username.setText(currentUser.getUsername());
                 Toast.makeText(MainActivity.this, "Logged In", Toast.LENGTH_SHORT).show();
 
 
             }
-        } else if (requestCode == ADD_COMMENT_CODE){
-            if (resultCode == RESULT_OK){
+        } else if (requestCode == ADD_COMMENT_CODE) {
+            if (resultCode == RESULT_OK) {
                 //TODO: db stuff
+            }
+        }
+    }
+
+    /**
+     * to load random images
+     * @param min
+     * @param max
+     * @return
+     */
+    static int randomInt(int min, int max) {
+        return new Random().nextInt(max + 1 - min) + min;
+    }
+
+    public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> {
+        private ArrayList<Post> posts = new ArrayList<Post>();
+
+        BoardAdapter(ArrayList<Post> postList) {
+            posts = postList;
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LinearLayout layout = (LinearLayout) LayoutInflater.from(parent.getContext()).inflate
+                    (R.layout.board_preview_card, parent, false);
+            return new ViewHolder(layout);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int index) {
+            holder.index = index;
+            holder.post = posts.get(index);
+
+            // set profile pic
+            holder.profileImage.setImageDrawable(
+                    getDrawable(imageIds[randomInt(0, imageIds.length - 1)]));
+
+            holder.postTitle.setText(posts.get(index).getTitle());
+            String username = getUsername(posts.get(index).getUserId());
+            holder.posterName.setText(username);
+            holder.postContent.setText(posts.get(index).getContents());
+            String rep = String.valueOf(posts.get(index).getReputation());
+            holder.repCounter.setText(rep);
+        }
+
+        @Override
+        public int getItemCount() {
+            return posts.size();
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+            Post post;
+            View customView;
+            CardView cardView;
+            ImageView profileImage;
+            TextView postTitle;
+            TextView posterName;
+            TextView postContent;
+            TextView repCounter;
+            ImageButton upVote;
+            ImageButton downVote;
+
+            int index = 0;
+
+            ViewHolder(View view) {
+                super(view);
+                customView = view;
+                cardView = view.findViewById(R.id.board_card_view);
+                profileImage = view.findViewById(R.id.profile_image);
+                postTitle = view.findViewById(R.id.preview_title);
+                posterName = view.findViewById(R.id.poster_name);
+                postContent = view.findViewById(R.id.preview_content);
+                repCounter = view.findViewById(R.id.reputation_counter);
+                upVote = view.findViewById(R.id.upVote);
+                downVote = view.findViewById(R.id.downVote);
+
+                upVote.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        post.setReputation(post.getReputation() + 1);
+                        DatabaseReference ref = postTable.child(Integer.toString(post.getPostId()));
+                        ref.child("reputation").setValue(post.getReputation());
+                    }
+                });
+
+                downVote.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        post.setReputation(post.getReputation() - 1);
+                        DatabaseReference ref = postTable.child(Integer.toString(post.getPostId()));
+                        ref.child("reputation").setValue(post.getReputation());
+                    }
+                });
+
+
+                View.OnClickListener viewClickListener = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openPost(post);
+                    }
+                };
+
+                cardView.setOnClickListener(viewClickListener);
+                postTitle.setOnClickListener(viewClickListener);
             }
         }
     }

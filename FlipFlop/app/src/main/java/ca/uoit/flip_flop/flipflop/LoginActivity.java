@@ -33,11 +33,20 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Cancel Login, ends the activity and brings user back to the main activity
+     * @param view
+     */
     public void cancelLogin(View view){
         setResult(RESULT_CANCELED);
         finish();
     }
 
+    /**
+     * Login click handler, checks if username and password match from the DB
+     *
+     * @param view
+     */
     public void doLogin(View view) {
         final String username = usernameField.getText().toString(); // TODO: Error check
         final String password = passwordField.getText().toString();
@@ -48,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Iterable<DataSnapshot> users = dataSnapshot.getChildren();
+                boolean found = false;
                 for (DataSnapshot currUser : users) {
                     String id = currUser.getKey();
                     String u_username = currUser.child("username").getValue(String.class);
@@ -64,12 +74,16 @@ public class LoginActivity extends AppCompatActivity {
                             // INVALID PASSWORD
                             Toast.makeText(LoginActivity.this, "Invalid password entered", Toast.LENGTH_SHORT).show();
                         }
-                    } else {
-                        // USER NOT FOUND
-                        usernameField.setText("");
-                        passwordField.setText("");
-                        Toast.makeText(LoginActivity.this, "Username not found!", Toast.LENGTH_SHORT).show();
+
+                        found = true;
                     }
+                }
+
+                if (!found) {
+                    // USER NOT FOUND
+                    usernameField.setText("");
+                    passwordField.setText("");
+                    Toast.makeText(LoginActivity.this, "Username not found!", Toast.LENGTH_SHORT).show();
                 }
             }
 

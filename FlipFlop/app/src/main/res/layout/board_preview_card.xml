@@ -40,6 +40,7 @@
                     android:padding="10dp">
 
                     <ImageView
+                        android:id="@+id/profile_image"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:src="@mipmap/ic_launcher_round"/>
