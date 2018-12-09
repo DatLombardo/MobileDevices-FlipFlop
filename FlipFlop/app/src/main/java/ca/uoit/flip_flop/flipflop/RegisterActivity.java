@@ -1,21 +1,30 @@
 package ca.uoit.flip_flop.flipflop;
 
+import android.content.Intent;
+import android.graphics.Paint;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import javax.net.ssl.HttpsURLConnection;
 
 
 public class RegisterActivity extends AppCompatActivity {
@@ -38,6 +47,9 @@ public class RegisterActivity extends AppCompatActivity {
         confirmPassField = (EditText)findViewById(R.id.password_confirm_register);
 
         userTable = FirebaseDatabase.getInstance().getReference("Users");
+
+        TextView lblAgreement = (TextView)findViewById(R.id.agreement);
+        lblAgreement.setPaintFlags(lblAgreement.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
 
     /**
@@ -103,5 +115,42 @@ public class RegisterActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void showAgreement(View view) {
+
+        AsyncTask<String, Void, String> task = new AsyncTask<String, Void, String>() {
+            @Override
+            protected String doInBackground(String... urls) {
+                try {
+                    URL url = new URL(urls[0]);
+                    HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
+                    int responseCode = connection.getResponseCode();
+                    if (responseCode == HttpsURLConnection.HTTP_OK) {
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                        StringBuilder buffer = new StringBuilder();
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            buffer.append(line);
+                            buffer.append("\r\n");
+                        }
+                        return buffer.toString();
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                Intent intent = new Intent(getApplicationContext(), License_agrmnt.class);
+                intent.putExtra("license_agreement_key", s);
+                startActivity(intent);
+            }
+        };
+        task.execute("https://www.gnu.org/licenses/gpl.txt");
+
     }
 }

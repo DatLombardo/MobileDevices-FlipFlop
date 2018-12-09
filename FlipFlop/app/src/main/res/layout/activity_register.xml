@@ -80,4 +80,16 @@
             android:textColor="@color/black"/>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/agreement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center|bottom"
+        android:paddingTop="200dp"
+        android:textAlignment="center"
+        android:text="@string/license_agreement"
+        android:onClick="showAgreement"
+        android:textColor="@color/blue"/>
+
 </LinearLayout>

@@ -22,11 +22,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ShowDiscussionBoardActivity" android:label="Discussion"/>
-        <activity android:name=".LoginActivity" android:label="Login" />
-        <activity android:name=".RegisterActivity" android:label="Register"/>
-        <activity android:name=".AddPostActivity" android:label="Add Post"></activity>
-        <activity android:name=".Profile" android:label="Profile"></activity>
+        <activity
+            android:name=".ShowDiscussionBoardActivity"
+            android:label="Discussion" />
+        <activity
+            android:name=".LoginActivity"
+            android:label="Login" />
+        <activity
+            android:name=".RegisterActivity"
+            android:label="Register" />
+        <activity
+            android:name=".AddPostActivity"
+            android:label="Add Post" />
+        <activity
+            android:name=".Profile"
+            android:label="Profile" />
+        <activity
+            android:name=".License_agrmnt"
+            android:label="Licensing Agreement"/>
     </application>
 
 </manifest>
