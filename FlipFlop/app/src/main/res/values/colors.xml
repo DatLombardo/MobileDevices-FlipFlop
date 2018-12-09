@@ -12,5 +12,6 @@
     <color name= "darkGrey">#808080</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
+    <color name="light_white">#dbdbdb</color>
     <color name="turquoise">#AFEEEE</color>
 </resources>

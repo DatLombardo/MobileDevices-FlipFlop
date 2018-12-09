@@ -71,6 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password) || TextUtils.isEmpty(secondPass)){
             usernameField.setError("Username cannot be empty");
             passwordField.setError("Password cannot be empty");
+            confirmPassField.setError("Field can't be empty");
             return;
         } else if (password.equals(secondPass)) {
             ArrayList<User> userList =
@@ -78,6 +79,8 @@ public class RegisterActivity extends AppCompatActivity {
 
             for (User user : userList) {
                 if (username.equals(user.getUsername())) {
+                    usernameField.setText("");
+                    usernameField.setError("Pick a different username");
                     Toast.makeText
                             (this, "Username already exists", Toast.LENGTH_SHORT).show();
                     userExists = true;

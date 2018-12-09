@@ -398,8 +398,8 @@ public class MainActivity extends AppCompatActivity {
      * start login activity
      */
     public void launchLogin() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivityForResult(intent, LOGIN_CODE);
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivityForResult(intent, LOGIN_CODE);
     }
 
     /**

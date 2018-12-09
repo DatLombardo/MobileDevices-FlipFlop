@@ -6,4 +6,7 @@
     <dimen name="activity_actionbar_margin">60dp</dimen>
     <dimen name="activity_progress_margin">8dp</dimen>
     <dimen name="activity_progress_inv_margin">-8dp</dimen>
+
+    <dimen name="comment_activity_horizontal_margin">10dp</dimen>
+    <dimen name="comment_activity_vertical_margin">10dp</dimen>
 </resources>

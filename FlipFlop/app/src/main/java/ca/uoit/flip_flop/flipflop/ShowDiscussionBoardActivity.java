@@ -163,6 +163,8 @@ public class ShowDiscussionBoardActivity extends AppCompatActivity {
 
             addCommentSound.start();
             Toast.makeText(this, "Comment submitted", Toast.LENGTH_SHORT).show();
+            commentText.setText("");
+
         }
 
         // Hide keyboard

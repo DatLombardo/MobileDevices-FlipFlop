@@ -77,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                             finish();
                         } else {
                             // INVALID PASSWORD
+                            passwordField.setText("");
                             Toast.makeText(LoginActivity.this, "Invalid password entered", Toast.LENGTH_SHORT).show();
                         }
 
@@ -84,10 +85,12 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
 
-                if (!found) {
+                if (!found || username == "" || password == "") {
                     // USER NOT FOUND
                     usernameField.setText("");
+                    usernameField.setError("Try entering username again!");
                     passwordField.setText("");
+                    passwordField.setError("Try entering password again!");
                     Toast.makeText(LoginActivity.this, "Username not found!", Toast.LENGTH_SHORT).show();
                 }
             }

@@ -17,10 +17,9 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:foreground="?selectableItemBackground"
-        res:cardElevation="10dp"
+        app:cardCornerRadius="10dp"
         res:cardUseCompatPadding="true"
         android:backgroundTint="@android:color/white"
-        app:cardMaxElevation="5dp"
         android:focusable="true">
 
         <RelativeLayout
@@ -69,16 +68,17 @@
 
             <LinearLayout
                 android:layout_below="@id/username_title"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
 
                 <TextView
                     android:id="@+id/preview_content"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
+                    android:maxLines="2"
                     android:text="This is where the user will post things that can be liked or disliked"
                     android:textSize="14dp"
                     android:textColor="@color/black"/>
@@ -90,7 +90,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="300dp">
+            android:paddingLeft="300dp"
+            android:paddingTop="25dp">
 
             <ImageButton
                 android:id="@+id/upVote"
