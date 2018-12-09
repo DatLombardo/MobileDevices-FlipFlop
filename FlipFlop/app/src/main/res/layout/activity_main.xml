@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity"
-    android:background="@color/lightGrey">
+    android:background="@color/turquoise">
 
     <RelativeLayout
         android:id="@+id/topic_username"

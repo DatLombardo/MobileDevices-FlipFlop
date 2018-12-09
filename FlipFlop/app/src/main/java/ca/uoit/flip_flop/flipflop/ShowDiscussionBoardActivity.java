@@ -1,6 +1,7 @@
 package ca.uoit.flip_flop.flipflop;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,6 +36,8 @@ public class ShowDiscussionBoardActivity extends AppCompatActivity {
     private int postId;
     private int userId;
     protected DatabaseReference commentTable;
+
+    private MediaPlayer addCommentSound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +147,7 @@ public class ShowDiscussionBoardActivity extends AppCompatActivity {
      * @param view
      */
     public void postComment(View view){
+        addCommentSound = MediaPlayer.create(this, R.raw.button_click);
         if (userId == -1) {
             Toast.makeText(this, "Must be logged in to post comments", Toast.LENGTH_SHORT).show();
         } else {
@@ -156,6 +160,8 @@ public class ShowDiscussionBoardActivity extends AppCompatActivity {
             map.put("user_id", userId);
 
             commentTable.child(postIdStr).child(commentIdStr).setValue(map);
+
+            addCommentSound.start();
             Toast.makeText(this, "Comment submitted", Toast.LENGTH_SHORT).show();
         }
 

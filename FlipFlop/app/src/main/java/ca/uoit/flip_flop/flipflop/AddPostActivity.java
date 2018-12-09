@@ -1,6 +1,7 @@
 package ca.uoit.flip_flop.flipflop;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -78,7 +79,6 @@ public class AddPostActivity extends AppCompatActivity {
         map.put("contents", postContentStr);
         map.put("reputation", 0);
         map.put("user_id", userId);
-
         postTable.child(postIdStr).setValue(map);
         Toast.makeText(this, "Post submitted", Toast.LENGTH_SHORT).show();
         finish();

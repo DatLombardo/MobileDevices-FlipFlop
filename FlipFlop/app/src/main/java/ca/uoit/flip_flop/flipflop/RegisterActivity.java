@@ -1,5 +1,6 @@
 package ca.uoit.flip_flop.flipflop;
 
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,6 +23,8 @@ public class RegisterActivity extends AppCompatActivity {
     EditText usernameField;
     EditText passwordField;
     EditText confirmPassField;
+
+    private MediaPlayer registerBtnSound;
 
     protected DatabaseReference userTable;
 
@@ -52,6 +55,8 @@ public class RegisterActivity extends AppCompatActivity {
      * @param view
      */
     public void doRegistration(View view) {
+
+        registerBtnSound = MediaPlayer.create(this, R.raw.button_click);
 
         String username = usernameField.getText().toString();
         String password = passwordField.getText().toString();
@@ -87,6 +92,8 @@ public class RegisterActivity extends AppCompatActivity {
                 userTable.child(newCount).child("username").setValue(username);
                 userTable.child(newCount).child("password").setValue(password);
                 userTable.child(newCount).child("dateCreated").setValue(todayString);
+
+                registerBtnSound.start();
                 Toast.makeText(this, "Registration Complete", Toast.LENGTH_SHORT).show();
                 finish();
             }

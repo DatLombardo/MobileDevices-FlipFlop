@@ -15,20 +15,20 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:foreground="?selectableItemBackground"
-        res:cardElevation="2dp"
+        res:cardElevation="15dp"
         res:cardUseCompatPadding="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/silver">
+            android:background="@color/turquoise">
 
             <TextView
                 android:id="@+id/commenter_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="idiot"
+                android:text="comment"
                 android:layout_weight="1"
                 android:padding="6dp"
                 android:textColor="@color/darkBlue"/>

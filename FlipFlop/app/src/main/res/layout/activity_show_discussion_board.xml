@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
     android:orientation="vertical"
     tools:context=".ShowDiscussionBoardActivity"
-    android:background="@color/lightGrey">
+    android:background="@color/white">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -20,7 +19,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/lightGrey">
+                android:background="@color/white">
                 <LinearLayout
                     android:id="@+id/title_holder"
                     android:layout_width="match_parent"
@@ -76,7 +75,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/comment_content_prompt"
                         android:textSize="18dp"
-                        android:textColorHint="@color/black"
+                        android:textColorHint="@color/darkGrey"
                         android:textColor="@color/black"
                         android:layout_marginBottom="15dp"/>
 
@@ -91,7 +90,8 @@
                             android:onClick="postComment"
                             android:layout_margin="5dp"
                             android:text="@string/post_comment"
-                            android:background="@color/green"
+                            android:padding="10dp"
+                            android:background="@drawable/rounded_corner_green"
                             android:textColor="@color/black"/>
 
 
@@ -101,7 +101,7 @@
                             android:onClick="cancelComment"
                             android:layout_margin="5dp"
                             android:text="@string/cancel_comment"
-                            android:background="@color/red"
+                            android:background="@drawable/rounded_corner_red"
                             android:textColor="@color/black"/>
 
 

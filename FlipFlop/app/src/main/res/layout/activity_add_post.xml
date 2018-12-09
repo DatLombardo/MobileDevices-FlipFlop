@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddPostActivity"
-    android:background="@color/lightGrey">
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
             android:maxLength="50"
             android:hint="@string/post_title_prompt"
             android:textColor="@color/black"
-            android:textColorHint="@color/black"/>
+            android:textColorHint="@color/darkGrey"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -45,12 +45,13 @@
             android:maxLines="5"
             android:maxLength="250"
             android:textColor="@color/black"
-            android:textColorHint="@color/black"/>
+            android:textColorHint="@color/darkGrey"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:gravity="center"
             android:padding="10dp">
 
             <Button
@@ -60,8 +61,10 @@
                 android:text="@string/post_button"
                 android:layout_margin="5dp"
                 android:onClick="addPost"
-                android:background="@color/green"
-                android:textColor="@color/black"/>
+                android:layout_weight="1"
+                android:background="@drawable/rounded_corner_green"
+                android:shadowColor="@color/blue"
+                android:textColor="@color/black" />
 
             <Button
                 android:id="@+id/cancelBtn"
@@ -70,7 +73,8 @@
                 android:text="@string/cancel_button"
                 android:layout_margin="5dp"
                 android:onClick="cancelPost"
-                android:background="@color/red"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_corner_red"
                 android:textColor="@color/black"/>
 
         </LinearLayout>

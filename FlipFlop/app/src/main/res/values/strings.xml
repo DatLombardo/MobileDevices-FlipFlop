@@ -10,7 +10,9 @@
     (such as stars, planets, comets, and galaxies) and phenomena that originate outside the </string>
     <string name="post_comment">Post Comment</string>
     <string name="cancel_comment">Cancel</string>
+    <string name="username_field_lbl">Enter username:</string>
     <string name="username_field">Username</string>
+    <string name="password_field_lbl">Enter password:</string>
     <string name="password_field">Password</string>
     <string name="confirm_pass_field">Confirm Password</string>
     <string name="cancel_button">Cancel</string>

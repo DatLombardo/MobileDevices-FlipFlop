@@ -1,6 +1,7 @@
 package ca.uoit.flip_flop.flipflop;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameField;
     private EditText passwordField;
+
+    private MediaPlayer loginBtnSound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     public void doLogin(View view) {
         final String username = usernameField.getText().toString(); // TODO: Error check
         final String password = passwordField.getText().toString();
+        loginBtnSound = MediaPlayer.create(this, R.raw.button_click);
 
         // attempt to find user with specified information
         DatabaseReference userTable = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -69,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                             Intent intent = new Intent();
                             intent.putExtra("id", id);
                             setResult(RESULT_OK, intent);
+                            loginBtnSound.start();
                             finish();
                         } else {
                             // INVALID PASSWORD

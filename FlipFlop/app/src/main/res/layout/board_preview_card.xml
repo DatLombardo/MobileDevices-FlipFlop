@@ -17,15 +17,15 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:foreground="?selectableItemBackground"
-        res:cardElevation="2dp"
+        res:cardElevation="10dp"
         res:cardUseCompatPadding="true"
+        android:backgroundTint="@android:color/white"
         app:cardMaxElevation="5dp"
         android:focusable="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/silver">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/username_title"

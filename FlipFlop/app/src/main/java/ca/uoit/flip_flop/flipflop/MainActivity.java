@@ -1,6 +1,8 @@
 package ca.uoit.flip_flop.flipflop;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
@@ -53,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     public int userCount;
     public int postCount;
     public int commentCount;
+
+    private MediaPlayer addPostSound;
 
     TextView username;
 
@@ -131,11 +136,16 @@ public class MainActivity extends AppCompatActivity {
         /**
          * Used to read firebase database, listens for changes in Posts table.
          */
+        addPostSound = MediaPlayer.create(this, R.raw.add_post);
         postTable.addValueEventListener(new ValueEventListener() {
+            List<Integer> postIds = new ArrayList<>();
+
             @Override
             public void onDataChange(DataSnapshot userSnapshot) {
                 // get all of the children at this level.
                 Iterable<DataSnapshot> posts = userSnapshot.getChildren();
+
+                boolean soundPlayed = false;
 
                 postList.clear();
                 for (DataSnapshot currPost : posts) {
@@ -152,9 +162,22 @@ public class MainActivity extends AppCompatActivity {
                     post.setReputation(reputation);
                     post.setUserId(userId);
                     postList.add(post);
-
                     postCount = id;
+
+                    // Check if the post is new, if it is and we haven't already played the
+                    // notification sound then play it
+                    if (!postIds.contains(id))
+                    {
+                        if (!soundPlayed)
+                        {
+                            addPostSound.start();
+                            soundPlayed = true;
+                        }
+
+                        postIds.add(id);
+                    }
                 }
+
                 //reverse posts
                 Collections.reverse(postList);
                 boardAdapter.notifyDataSetChanged();
@@ -406,11 +429,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
 
         } else {
-            Intent intent = new Intent(this, Profile.class);
-            intent.putExtra("user_id", 0);
-            intent.putExtra("user_list", userList);
-            intent.putExtra("post_list", postList);
-            startActivity(intent);
+            Toast.makeText(this, "Log In to view Profile", Toast.LENGTH_SHORT).show();
+            return;
         }
     }
 
@@ -442,10 +462,14 @@ public class MainActivity extends AppCompatActivity {
      * Logout user if user is logged in
      */
     public void logout() {
-        currentUser = null;
-        System.out.println(currentUser);
-        username = (TextView) findViewById(R.id.username);
-        username.setText(R.string.anon_user);
+        if (currentUser == null) {
+            Toast.makeText(this, "Not logged in", Toast.LENGTH_SHORT).show();
+        } else {
+            currentUser = null;
+            System.out.println(currentUser);
+            username = (TextView) findViewById(R.id.username);
+            username.setText(R.string.anon_user);
+        }
     }
 
     /**
@@ -457,7 +481,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ADD_POST_CODE) {
             if (resultCode == RESULT_OK) {
-                //TODO: db stuff
                 String postContent = data.getStringExtra("post_title");
                 String postTitle = data.getStringExtra("post_content");
                 int userId = data.getIntExtra("user_id", 0);
@@ -485,7 +508,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else if (requestCode == ADD_COMMENT_CODE) {
             if (resultCode == RESULT_OK) {
-                //TODO: db stuff
+
             }
         }
     }
@@ -502,6 +525,7 @@ public class MainActivity extends AppCompatActivity {
 
     public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> {
         private ArrayList<Post> posts = new ArrayList<Post>();
+        private HashMap<Integer, Drawable> postImages = new HashMap<>();
 
         BoardAdapter(ArrayList<Post> postList) {
             posts = postList;
@@ -519,9 +543,20 @@ public class MainActivity extends AppCompatActivity {
             holder.index = index;
             holder.post = posts.get(index);
 
-            // set profile pic
-            holder.profileImage.setImageDrawable(
-                    getDrawable(imageIds[randomInt(0, imageIds.length - 1)]));
+            int id = holder.post.getPostId();
+
+            // Check if we already have a profile picture for this image
+            Drawable image = null;
+            if (postImages.containsKey(id))
+                image = postImages.get(id);
+            else
+            {
+                image = getDrawable(imageIds[randomInt(0, imageIds.length - 1)]);
+                postImages.put(id, image);
+            }
+
+            // Set profile image
+            holder.profileImage.setImageDrawable(image);
 
             holder.postTitle.setText(posts.get(index).getTitle());
             String username = getUsername(posts.get(index).getUserId());

@@ -34,18 +34,27 @@ public class Profile extends AppCompatActivity {
         if (uId == 0){
             userLabel.setText("Anonymous");
             dateLabel.setText("Not Registered");
-
-        }
-        else{
-            userLabel.setText(userList.get(uId-1).getUsername());
-            dateLabel.setText(userList.get(uId-1).getDateCreated());
+            return;
         }
 
-        //Create lists of likes / dislikes
+        // Find user
+        User user = null;
+        for (User u : userList) {
+            if (u.getUserId() == uId) {
+                user = u;
+                break;
+            }
+        }
+
+        // Update labels
+        userLabel.setText(user.getUsername());
+        dateLabel.setText(user.getDateCreated());
+
+        // Create lists of likes / dislikes
         ArrayList<Post> likesList = getPosts(dbHelper.getUserLikes(uId));
         ArrayList<Post> dislikesList = getPosts(dbHelper.getUserDislikes(uId));
 
-        //Apply to both listView adapters.
+        // Apply to both listView adapters.
         PostAdapter likesAdapater = new PostAdapter(this, likesList);
         ListView likesView = (ListView) findViewById(R.id.likes);
         likesView.setAdapter(likesAdapater);
@@ -59,15 +68,21 @@ public class Profile extends AppCompatActivity {
      * getPosts
      *
      * Used to get all posts based on a list of integers returned from SQL call for likes / dislikes
-     * @param pList
+     * @param postIds
      * @return
      */
-    public ArrayList<Post> getPosts(List<Integer> pList){
-        ArrayList<Post> returnList = new ArrayList<Post> ();
-        for (int post: pList) {
-            returnList.add(postList.get(post-1));
+    public ArrayList<Post> getPosts(List<Integer> postIds) {
+        ArrayList<Post> posts = new ArrayList<>();
+        for (Integer id : postIds) {
+            for (Post p : postList) {
+                if (p.getPostId() == id) {
+                    posts.add(p);
+                    break;
+                }
+            }
         }
-        return returnList;
+
+        return posts;
     }
 
     /**

@@ -16,9 +16,9 @@ public class BoardDBHelper extends SQLiteOpenHelper {
     public static final String TABLE_DISLIKES = "dislikes";
 
     /**
-     *  CREATE_LIKES_STATEMENT
-     *  CREATE_DISLIKES_STATEMENT
-     *
+     * CREATE_LIKES_STATEMENT
+     * CREATE_DISLIKES_STATEMENT
+     * <p>
      * SQL Statements to create each of the given tables into the database
      */
 
@@ -40,7 +40,6 @@ public class BoardDBHelper extends SQLiteOpenHelper {
      * DROP_LIKES_STATEMENT
      * DROP_DISLIKES_STATEMENT
      * SQL Statements for dropping (removing) the given table.
-     *
      */
 
     public static final String DROP_LIKES_STATEMENT = "" +
@@ -83,28 +82,34 @@ public class BoardDBHelper extends SQLiteOpenHelper {
      */
     public void createLike(int post_id,
                            int user_id) {
-
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put("post_id", post_id);
         values.put("user_id", user_id);
 
-        //Check to see if post has already been liked
-        Cursor cursor = null;
+        // Remove any dislikes by the user on this post
+        if (db.delete(TABLE_DISLIKES, "post_id=? AND user_id=?",
+                new String[]{
+                        Integer.toString(post_id),
+                        Integer.toString(user_id)
+                }) > 0)
+        {
+            // We're only un-disliking, no need to add a like
+            return;
+        }
 
-        String check = "SELECT * FROM " + TABLE_LIKES + " WHERE post_id="
+        // Check to see if post has already been liked
+        String query = "SELECT * FROM " + TABLE_LIKES + " WHERE post_id="
                 + post_id + " AND user_id=" + user_id;
 
-        cursor= db.rawQuery(check,null);
-
-        if(cursor.getCount()>0){
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.getCount() > 0) {
             System.out.println("User has already liked this post");
-        }else{
-            long id = db.insert(TABLE_LIKES, null, values);
+        } else {
+            db.insert(TABLE_LIKES, null, values);
         }
         cursor.close();
-
     }
 
     /**
@@ -123,21 +128,28 @@ public class BoardDBHelper extends SQLiteOpenHelper {
         values.put("post_id", post_id);
         values.put("user_id", user_id);
 
-        //Check to see if post has already been liked
-        Cursor cursor = null;
+        // Remove any likes by the user on this post
+        if (db.delete(TABLE_LIKES, "post_id=? AND user_id=?",
+                new String[]{
+                        Integer.toString(post_id),
+                        Integer.toString(user_id)
+                }) > 0)
+        {
+            // We're only un-liking, no need to add a dislike
+            return;
+        }
 
-        String check = "SELECT * FROM "+ TABLE_DISLIKES + " WHERE post_id="
+        // Check to see if post has already been disliked
+        String query = "SELECT * FROM " + TABLE_DISLIKES + " WHERE post_id="
                 + post_id + " AND user_id=" + user_id;
 
-        cursor= db.rawQuery(check,null);
-
-        if(cursor.getCount()>0){
-            System.out.println("User has already disliked  this post");
-        }else{
-            long id = db.insert(TABLE_DISLIKES, null, values);
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.getCount() > 0) {
+            System.out.println("User has already disliked this post");
+        } else {
+            db.insert(TABLE_DISLIKES, null, values);
         }
         cursor.close();
-
     }
 
     /**
@@ -150,13 +162,13 @@ public class BoardDBHelper extends SQLiteOpenHelper {
     public List<Integer> getUserLikes(int uID) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String[] columns = new String[] {
+        String[] columns = new String[]{
                 "_id",
                 "post_id",
                 "user_id"
         };
 
-        String[] args = new String[] {
+        String[] args = new String[]{
                 "" + uID
         };
 
@@ -189,13 +201,13 @@ public class BoardDBHelper extends SQLiteOpenHelper {
     public List<Integer> getUserDislikes(int uID) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String[] columns = new String[] {
+        String[] columns = new String[]{
                 "_id",
                 "post_id",
                 "user_id"
         };
 
-        String[] args = new String[] {
+        String[] args = new String[]{
                 "" + uID
         };
 
@@ -228,7 +240,7 @@ public class BoardDBHelper extends SQLiteOpenHelper {
     public boolean deleteLikes(long id) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String[] args = new String[] {
+        String[] args = new String[]{
                 "" + id
         };
 
@@ -241,22 +253,20 @@ public class BoardDBHelper extends SQLiteOpenHelper {
     /**
      * deleteAllLikes
      * Used primarily for testing purposes, removes all like elements from the DB.
-     *
      */
     public void deleteAllLikes() {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.delete(TABLE_LIKES, "", new String[] {});
+        db.delete(TABLE_LIKES, "", new String[]{});
     }
 
     /**
      * deleteAllDislikes
      * Used primarily for testing purposes, removes all dislike elements from the DB.
-     *
      */
     public void deleteAllDislikes() {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.delete(TABLE_DISLIKES, "", new String[] {});
+        db.delete(TABLE_DISLIKES, "", new String[]{});
     }
 }

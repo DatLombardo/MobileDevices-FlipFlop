@@ -6,57 +6,54 @@
     android:layout_height="match_parent"
     android:layout_centerHorizontal="true"
     android:layout_gravity="center_horizontal"
-    android:gravity="center_horizontal"
+    android:gravity="center_horizontal|center_vertical"
     android:orientation="vertical"
     tools:context=".RegisterActivity"
-    android:background="@color/lightGrey">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textSize="20dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="10dp"
-        android:text="@string/register_prompt"
-        android:textColor="@color/darkBlue"/>
-
-    <EditText
-        android:id="@+id/username_register"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:textSize="16dp"
-        android:maxLength="16"
-        android:hint="@string/username_field"
-        android:textColorHint="@color/black"
-        android:textColor="@color/black"/>
-
-    <EditText
-        android:id="@+id/password_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="20dp"
-        android:textSize="16dp"
-        android:inputType="textPassword"
-        android:maxLength="16"
-        android:hint="@string/password_field"
-        android:textColorHint="@color/black"
-        android:textColor="@color/black"/>
-
-    <EditText
-        android:id="@+id/password_confirm_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="20dp"
-        android:textSize="16dp"
-        android:inputType="textPassword"
-        android:maxLength="16"
-        android:hint="@string/confirm_pass_field"
-        android:textColorHint="@color/black"
-        android:textColor="@color/black"/>
+    android:background="@color/white">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+        <EditText
+            android:id="@+id/username_register"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textSize="16dp"
+            android:maxLength="16"
+            android:paddingBottom="15dp"
+            android:hint="@string/username_field_lbl"
+            android:textColorHint="@color/darkGrey"
+            android:textColor="@color/black"/>
+
+        <EditText
+            android:id="@+id/password_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
+            android:textSize="16dp"
+            android:inputType="textPassword"
+            android:maxLength="16"
+            android:hint="@string/password_field_lbl"
+            android:textColorHint="@color/darkGrey"
+            android:textColor="@color/black"/>
+
+        <EditText
+            android:id="@+id/password_confirm_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
+            android:textSize="16dp"
+            android:inputType="textPassword"
+            android:maxLength="16"
+            android:hint="@string/confirm_pass_field"
+            android:textColorHint="@color/darkGrey"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
@@ -68,7 +65,7 @@
             android:onClick="doRegistration"
             android:layout_margin="5dp"
             android:text="@string/register_button"
-            android:background="@color/green"
+            android:background="@drawable/rounded_corner_green"
             android:textColor="@color/black"/>
 
         <Button
@@ -79,7 +76,7 @@
             android:onClick="cancelRegistration"
             android:layout_margin="5dp"
             android:text="@string/cancel_button"
-            android:background="@color/red"
+            android:background="@drawable/rounded_corner_red"
             android:textColor="@color/black"/>
     </LinearLayout>
 
