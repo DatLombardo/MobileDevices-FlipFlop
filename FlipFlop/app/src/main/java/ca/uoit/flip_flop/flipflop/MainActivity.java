@@ -469,6 +469,7 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(currentUser);
             username = (TextView) findViewById(R.id.username);
             username.setText(R.string.anon_user);
+            Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
         }
     }
 
