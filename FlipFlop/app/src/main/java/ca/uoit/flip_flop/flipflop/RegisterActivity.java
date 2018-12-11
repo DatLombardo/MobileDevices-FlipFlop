@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -101,16 +102,21 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
             if (!userExists) {
+                byte[] salt = PasswordHandler.generateSalt();
+                password = PasswordHandler.securePassword(password.toCharArray(), salt);
+
                 int userCount = getIntent().getIntExtra("user_count", 0);
                 String newCount = String.valueOf(userCount + 1);
 
                 userTable.child(newCount).child("username").setValue(username);
                 userTable.child(newCount).child("password").setValue(password);
                 userTable.child(newCount).child("dateCreated").setValue(todayString);
+                userTable.child(newCount).child("salt").setValue(PasswordHandler.bytesToHexString(salt));
 
                 registerBtnSound.start();
                 Toast.makeText(this, "Registration Complete", Toast.LENGTH_SHORT).show();
                 finish();
+
             }
         } else {
             Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();

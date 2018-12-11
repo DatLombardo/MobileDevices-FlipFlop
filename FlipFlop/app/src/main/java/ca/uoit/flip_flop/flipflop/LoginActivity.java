@@ -6,9 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -16,8 +14,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -68,7 +64,12 @@ public class LoginActivity extends AppCompatActivity {
                     String u_password = currUser.child("password").getValue(String.class);
 
                     if (u_username.equals(username)) {
-                        if (u_password.equals(password)) {
+                        byte[] u_salt = PasswordHandler.
+                                hexStringToBytes(currUser.child("salt").getValue(String.class));
+                        String passwordTest = PasswordHandler.
+                                securePassword(password.toCharArray(), u_salt);
+
+                        if (u_password.equals(passwordTest)) {
                             // SUCCESS
                             Intent intent = new Intent();
                             intent.putExtra("id", id);
