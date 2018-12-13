@@ -8,6 +8,7 @@ public class Post implements Serializable{
     private String contents;
     private int reputation;
     private int userId;
+    private String location;
 
     public String getTitle() {
         return title;
@@ -47,5 +48,13 @@ public class Post implements Serializable{
 
     public void setPostId(int postId) {
         this.postId = postId;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

@@ -62,7 +62,7 @@
                     android:paddingLeft="5dp"
                     android:textSize="20dp"
                     android:textColor="@color/blue"
-                    android:text="This is a fake title "/>
+                    android:text="This is a fake title"/>
 
             </LinearLayout>
 

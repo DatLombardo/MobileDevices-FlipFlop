@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
                     String contents = currPost.child("contents").getValue(String.class);
                     int reputation = currPost.child("reputation").getValue(Integer.class);
                     int userId = currPost.child("user_id").getValue(Integer.class);
+                    String location = currPost.child("location").getValue(String.class);
 
                     Post post = new Post();
                     post.setPostId(id);
@@ -161,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
                     post.setContents(contents);
                     post.setReputation(reputation);
                     post.setUserId(userId);
+                    post.setLocation(location);
                     postList.add(post);
                     postCount = id;
 
@@ -228,6 +230,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    // TODO: Add trailing "..."
 
     /**
      * creates a new user and adds it to the DB
