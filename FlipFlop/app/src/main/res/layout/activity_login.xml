@@ -46,17 +46,23 @@
                 android:textColor="@color/darkBlue"
                 android:textSize="20dp"
                 android:paddingTop="15dp"/>
-            <EditText
-                android:id="@+id/password_login"
+
+            <android.support.design.widget.TextInputLayout
+                app:passwordToggleEnabled="true"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                android:textSize="16dp"
-                android:inputType="textPassword"
-                android:maxLength="16"
-                android:hint="@string/password_field"
-                android:textColorHint="@color/darkGrey"
-                android:textColor="@color/black"/>
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/password_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:textSize="16dp"
+                    android:inputType="textPassword"
+                    android:maxLength="16"
+                    android:hint="@string/password_field"
+                    android:textColorHint="@color/darkGrey"
+                    android:textColor="@color/black"/>
+            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout

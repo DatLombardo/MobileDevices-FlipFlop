@@ -19,15 +19,22 @@
             android:textSize="24dp"
             android:text="@string/post_title"
             android:textColor="@color/darkBlue"/>
-
-        <EditText
-            android:id="@+id/add_post_title"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLength="50"
-            android:hint="@string/post_title_prompt"
-            android:textColor="@color/black"
-            android:textColorHint="@color/darkGrey"/>
+            app:counterEnabled="true"
+            app:counterMaxLength="50"
+            app:counterTextAppearance="@color/blue"
+            app:counterOverflowTextAppearance="@color/red">
+            <EditText
+                android:id="@+id/add_post_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="50"
+                android:hint="@string/post_title_prompt"
+                android:textColor="@color/black"
+                android:textColorHint="@color/darkGrey"/>
+        </android.support.design.widget.TextInputLayout>
 
         <TextView
             android:layout_width="match_parent"
@@ -35,17 +42,24 @@
             android:textSize="24dp"
             android:text="@string/post_content"
             android:textColor="@color/darkBlue"/>
-
-        <EditText
-            android:id="@+id/add_post_content"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/post_content_prompt"
-            android:minLines="5"
-            android:maxLines="5"
-            android:maxLength="250"
-            android:textColor="@color/black"
-            android:textColorHint="@color/darkGrey"/>
+            app:counterEnabled="true"
+            app:counterMaxLength="250"
+            app:counterTextAppearance="@color/blue"
+            app:counterOverflowTextAppearance="@color/red">
+            <EditText
+                android:id="@+id/add_post_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/post_content_prompt"
+                android:minLines="5"
+                android:maxLines="5"
+                android:maxLength="250"
+                android:textColor="@color/black"
+                android:textColorHint="@color/darkGrey"/>
+        </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

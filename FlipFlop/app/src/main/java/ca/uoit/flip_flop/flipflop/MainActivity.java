@@ -403,8 +403,12 @@ public class MainActivity extends AppCompatActivity {
      * start login activity
      */
     public void launchLogin() {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivityForResult(intent, LOGIN_CODE);
+        if (currentUser != null) {
+            Toast.makeText(this, "User already logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivityForResult(intent, LOGIN_CODE);
     }
 
     /**

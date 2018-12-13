@@ -162,9 +162,10 @@ public class AddPostActivity extends AppCompatActivity implements LocationListen
 
     private void requestLocationUpdates() {
         try {
-            // Get last known location
+            // Get last known location if it is available
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            onLocationChanged(location);
+            if (location != null)
+                onLocationChanged(location);
 
             // Get location updates using the GPS
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
