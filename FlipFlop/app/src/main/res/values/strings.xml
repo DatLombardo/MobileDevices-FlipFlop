@@ -28,6 +28,7 @@
     <string name="post_liked">Posts Liked</string>
     <string name="post_disliked">Posts Disliked</string>
     <string name="date_created">Date Created:</string>
+    <string name="location">Toronto</string>
 
 
 </resources>
