@@ -568,6 +568,7 @@ public class MainActivity extends AppCompatActivity {
             String username = getUsername(posts.get(index).getUserId());
             holder.posterName.setText(username);
             holder.postContent.setText(posts.get(index).getContents());
+            holder.postlocation.setText(holder.post.getLocation());
             String rep = String.valueOf(posts.get(index).getReputation());
             holder.repCounter.setText(rep);
         }
@@ -585,6 +586,7 @@ public class MainActivity extends AppCompatActivity {
             TextView postTitle;
             TextView posterName;
             TextView postContent;
+            TextView postlocation;
             TextView repCounter;
             ImageButton upVote;
             ImageButton downVote;
@@ -598,6 +600,7 @@ public class MainActivity extends AppCompatActivity {
                 profileImage = view.findViewById(R.id.profile_image);
                 postTitle = view.findViewById(R.id.preview_title);
                 posterName = view.findViewById(R.id.poster_name);
+                postlocation = view.findViewById(R.id.post_location);
                 postContent = view.findViewById(R.id.preview_content);
                 repCounter = view.findViewById(R.id.reputation_counter);
                 upVote = view.findViewById(R.id.upVote);
